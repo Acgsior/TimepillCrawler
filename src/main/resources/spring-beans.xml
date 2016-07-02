@@ -1,0 +1,83 @@
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util-3.1.xsd">
+
+    <bean id="tpURLFactory" name="tpURLFactory" class="com.acgsior.factory.URLFactory">
+        <constructor-arg name="URLMap">
+            <map>
+                <entry value="http://timepill.net/people/{0}">
+                    <key>
+                        <util:constant static-field="com.acgsior.factory.URLFactory.PERSON" />
+                    </key>
+                </entry>
+                <entry value="http://timepill.net/notebook/{0}">
+                    <key>
+                        <util:constant static-field="com.acgsior.factory.URLFactory.NOTEBOOK" />
+                    </key>
+                </entry>
+                <entry value="http://timepill.net/notebook/{0}/{1}">
+                    <key>
+                        <util:constant static-field="com.acgsior.factory.URLFactory.NOTEBOOK_DATE" />
+                    </key>
+                </entry>
+                <entry value="http://timepill.net/diary/{0}">
+                    <key>
+                        <util:constant static-field="com.acgsior.factory.URLFactory.DIARY" />
+                    </key>
+                </entry>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="imagePathFactory" name="imagePathFactory" class="com.acgsior.factory.ImagePathFactory">
+        <constructor-arg name="imageTypeBasePathMap">
+            <map>
+                <entry value="/Users/Yove/Temp/timepill/avatar/">
+                    <key>
+                        <util:constant static-field="com.acgsior.image.ImageType.AVATAR" />
+                    </key>
+                </entry>
+                <entry value="/Users/Yove/Temp/timepill/cover/">
+                    <key>
+                        <util:constant static-field="com.acgsior.image.ImageType.COVER" />
+                    </key>
+                </entry>
+                <entry value="/Users/Yove/Temp/timepill/image/">
+                    <key>
+                        <util:constant static-field="com.acgsior.image.ImageType.IMAGE" />
+                    </key>
+                </entry>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="imageSyncDownloader" name="imageSyncDownloader" class="com.acgsior.image.ImageSyncDownloader">
+        <property name="imagePathFactory" ref="imagePathFactory" />
+    </bean>
+
+    <!-- === SELECTORS === -->
+    <bean id="personNameSelector" name="personNameSelector" class="com.acgsior.selector.impl.TextSelector">
+        <property name="pattern" value=".user-info h2 a" />
+    </bean>
+
+    <bean id="registerDateSelector" name="registerDateSelector" class="com.acgsior.selector.impl.DateSelector">
+        <property name="pattern" value=".user-info p" />
+    </bean>
+
+    <bean id="personDescriptionSelector" name="personDescriptionSelector" class="com.acgsior.selector.impl.TextSelector">
+        <property name="pattern" value=".user-info pre" />
+    </bean>
+
+    <bean id="avatarSelector" name="avatarSelector" class="com.acgsior.selector.impl.ImageSelector">
+        <property name="pattern" value=".user-info a img" />
+        <property name="attributePattern" value="src" />
+        <property name="imageType">
+            <util:constant static-field="com.acgsior.image.ImageType.AVATAR" />
+        </property>
+        <property name="synchronize" value="true" />
+    </bean>
+</beans>
