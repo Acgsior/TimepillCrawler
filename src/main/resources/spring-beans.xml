@@ -86,7 +86,7 @@
 	      class="com.acgsior.selector.impl.notebook.NotebookIdSelector">
 		<property name="pattern" value="h3 a" />
 		<property name="attributePattern" value="href" />
-		<property name="id" value="notebook.id" />
+		<property name="id" value="notebook.tid" />
 	</bean>
 
 	<bean id="notebookNameSelector" name="notebookNameSelector" class="com.acgsior.selector.impl.TextObjectSelector">

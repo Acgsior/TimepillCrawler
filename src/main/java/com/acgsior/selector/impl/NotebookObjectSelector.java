@@ -4,9 +4,11 @@ import com.acgsior.factory.BeanFactory;
 import com.acgsior.model.Notebook;
 import com.acgsior.selector.ObjectSelector;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -14,14 +16,19 @@ import java.util.Optional;
  */
 public class NotebookObjectSelector extends ObjectSelector {
 
-	@Override
-	public Notebook select(final Document document, final Optional parentId) {
-		Element element = document.select(getPattern()).get(getElementIndex());
-		Notebook notebook = Notebook.newInstance();
-		Arrays.stream(getSyncSelectors()).forEach(selector -> {
-			Object value = selector.select(element, Optional.of(notebook.getUid()));
-			BeanFactory.setPropertyValueSafely(notebook, selector.getProperty(), value);
-		});
-		return notebook;
-	}
+    @Override
+    public List<Notebook> select(final Document document, final Optional parentId) {
+        Elements elements = document.select(getPattern());
+        List<Notebook> notebooks = new ArrayList<>();
+
+        elements.forEach(element -> {
+            Notebook notebook = Notebook.newInstance();
+            Arrays.stream(getSyncSelectors()).forEach(selector -> {
+                Object value = selector.select(element, Optional.of(notebook.getUid()));
+                BeanFactory.setPropertyValueSafely(notebook, selector.getProperty(), value);
+            });
+            notebooks.add(notebook);
+        });
+        return notebooks;
+    }
 }
