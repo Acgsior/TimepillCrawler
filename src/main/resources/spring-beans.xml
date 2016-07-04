@@ -62,15 +62,18 @@
 	<!-- === SELECTORS === -->
 	<bean id="personNameSelector" name="personNameSelector" class="com.acgsior.selector.impl.TextObjectSelector">
 		<property name="pattern" value=".user-info h2 a" />
+		<property name="id" value="person.name" />
 	</bean>
 
 	<bean id="registerDateSelector" name="registerDateSelector" class="com.acgsior.selector.impl.DateObjectSelector">
 		<property name="pattern" value=".user-info p" />
+		<property name="id" value="person.registerDate" />
 	</bean>
 
 	<bean id="personDescriptionSelector" name="personDescriptionSelector"
 	      class="com.acgsior.selector.impl.TextObjectSelector">
 		<property name="pattern" value=".user-info pre" />
+		<property name="id" value="person.description" />
 	</bean>
 
 	<bean id="avatarSelector" name="avatarSelector" class="com.acgsior.selector.impl.ImageObjectSelector">
@@ -80,6 +83,17 @@
 			<util:constant static-field="com.acgsior.image.ImageType.AVATAR" />
 		</property>
 		<property name="synchronize" value="true" />
+	</bean>
+
+	<bean id="personSelector" name="personSelector" class="com.acgsior.selector.impl.PersonObjectSelector">
+		<property name="pattern" value="body" />
+		<property name="syncSelectors">
+			<array>
+				<ref bean="personNameSelector" />
+				<ref bean="registerDateSelector" />
+				<ref bean="personDescriptionSelector" />
+			</array>
+		</property>
 	</bean>
 
 	<bean id="notebookIdSelector" name="notebookIdSelector"
@@ -103,11 +117,11 @@
 	<bean name="notebookSelector" id="notebookSelector" class="com.acgsior.selector.impl.NotebookObjectSelector">
 		<property name="pattern" value=".notebooks .notebook" />
 		<property name="syncSelectors">
-			<list>
+			<array>
 				<ref bean="notebookIdSelector" />
 				<ref bean="notebookNameSelector" />
 				<ref bean="notebookBeginEndDateSelector" />
-			</list>
+			</array>
 		</property>
 	</bean>
 </beans>

@@ -17,6 +17,8 @@ public class Notebook extends Base {
     private LocalDate begin;
     private LocalDate end;
 
+    // private Image cover;
+
     public static Notebook newInstance() {
         return new Notebook();
     }

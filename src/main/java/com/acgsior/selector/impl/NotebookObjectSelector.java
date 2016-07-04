@@ -2,6 +2,7 @@ package com.acgsior.selector.impl;
 
 import com.acgsior.factory.BeanFactory;
 import com.acgsior.model.Notebook;
+import com.acgsior.selector.ICachedSelector;
 import com.acgsior.selector.ObjectSelector;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -14,7 +15,7 @@ import java.util.Optional;
 /**
  * Created by Yove on 16/07/03.
  */
-public class NotebookObjectSelector extends ObjectSelector {
+public class NotebookObjectSelector extends ObjectSelector implements ICachedSelector {
 
     @Override
     public List<Notebook> select(final Document document, final Optional parentId) {
@@ -30,5 +31,9 @@ public class NotebookObjectSelector extends ObjectSelector {
             notebooks.add(notebook);
         });
         return notebooks;
+    }
+
+    @Override
+    public void cache(Object value) {
     }
 }
