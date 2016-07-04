@@ -3,8 +3,8 @@ package com.acgsior.selector.impl;
 import com.acgsior.image.ImageAsyncDownloader;
 import com.acgsior.image.ImageSyncDownloader;
 import com.acgsior.image.ImageType;
-import com.acgsior.selector.AttributeSelector;
-import org.jsoup.nodes.Document;
+import com.acgsior.selector.AttributeObjectSelector;
+import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +15,9 @@ import java.util.Optional;
 /**
  * Created by Yove on 16/07/01.
  */
-public class ImageSelector extends AttributeSelector {
+public class ImageObjectSelector extends AttributeObjectSelector {
 
-	private static Logger logger = LoggerFactory.getLogger(ImageSelector.class);
+	private static Logger logger = LoggerFactory.getLogger(ImageObjectSelector.class);
 
 	private boolean synchronize;
 
@@ -29,13 +29,13 @@ public class ImageSelector extends AttributeSelector {
 	private ImageType imageType;
 
 	@Override
-	public String select(final Document document, final Optional parentId) {
-		String imageSrc = standardizeImageURL(super.select(document, parentId));
+	public String select(final Element element, final Optional parentId) {
+		String imageSrc = standardizeImageURL(super.select(element, parentId));
 		if (synchronize) {
 			try {
 				imageSyncDownloader.downloadImage(imageType, imageSrc, String.valueOf(parentId.get()));
 			} catch (IOException e) {
-				logger.error(String.format("Failed to download image: %s", imageSrc), e);
+				logger.error(String.format("Failed to download image: %s", imageSrc));
 			}
 		} else {
 			imageAsyncDownloader.downloadImage(imageType, imageSrc, String.valueOf(parentId.get()));

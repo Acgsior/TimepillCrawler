@@ -60,24 +60,36 @@
     </bean>
 
     <!-- === SELECTORS === -->
-    <bean id="personNameSelector" name="personNameSelector" class="com.acgsior.selector.impl.TextSelector">
+    <bean id="personNameSelector" name="personNameSelector" class="com.acgsior.selector.impl.TextObjectSelector">
         <property name="pattern" value=".user-info h2 a" />
     </bean>
 
-    <bean id="registerDateSelector" name="registerDateSelector" class="com.acgsior.selector.impl.DateSelector">
+    <bean id="registerDateSelector" name="registerDateSelector" class="com.acgsior.selector.impl.DateObjectSelector">
         <property name="pattern" value=".user-info p" />
     </bean>
 
-    <bean id="personDescriptionSelector" name="personDescriptionSelector" class="com.acgsior.selector.impl.TextSelector">
+    <bean id="personDescriptionSelector" name="personDescriptionSelector" class="com.acgsior.selector.impl.TextObjectSelector">
         <property name="pattern" value=".user-info pre" />
     </bean>
 
-    <bean id="avatarSelector" name="avatarSelector" class="com.acgsior.selector.impl.ImageSelector">
+    <bean id="avatarSelector" name="avatarSelector" class="com.acgsior.selector.impl.ImageObjectSelector">
         <property name="pattern" value=".user-info a img" />
         <property name="attributePattern" value="src" />
         <property name="imageType">
             <util:constant static-field="com.acgsior.image.ImageType.AVATAR" />
         </property>
         <property name="synchronize" value="true" />
+    </bean>
+
+    <bean id="notebookNameSelector" name="notebookNameSelector" class="com.acgsior.selector.impl.TextObjectSelector">
+        <property name="pattern" value="h3 a" />
+        <property name="id" value="notebook.name" />
+    </bean>
+
+    <bean id="notebookBeginSelector" name="notebookBeginSelector" class="com.acgsior.selector.impl.DateObjectSelector">
+        <property name="pattern" value=".user-info p" />
+    </bean>
+    <bean id="registerDateSelector" name="registerDateSelector" class="com.acgsior.selector.impl.DateObjectSelector">
+        <property name="pattern" value=".user-info p" />
     </bean>
 </beans>

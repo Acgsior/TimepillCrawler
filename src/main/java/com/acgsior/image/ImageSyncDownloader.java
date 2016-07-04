@@ -27,7 +27,6 @@ public class ImageSyncDownloader extends ImageDownloader {
 		return imagePath;
 	}
 
-
 	public void setDeletedDuplicate(final boolean deletedDuplicate) {
 		this.deletedDuplicate = deletedDuplicate;
 	}

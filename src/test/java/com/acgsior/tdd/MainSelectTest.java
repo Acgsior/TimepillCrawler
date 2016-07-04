@@ -3,7 +3,7 @@ package com.acgsior.tdd;
 import com.acgsior.factory.ImagePathFactory;
 import com.acgsior.factory.URLFactory;
 import com.acgsior.image.ImageType;
-import com.acgsior.selector.Selector;
+import com.acgsior.selector.PropertySelector;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -32,16 +32,16 @@ public class MainSelectTest {
 	private String personId = "100079421";
 
 	@Resource(name = "personNameSelector")
-	private Selector<String> personNameSelector;
+	private PropertySelector<String> personNameSelector;
 
 	@Resource(name = "registerDateSelector")
-	private Selector<LocalDate> registerDateSelector;
+	private PropertySelector<LocalDate> registerDateSelector;
 
 	@Resource(name = "personDescriptionSelector")
-	private Selector<String> personDescriptionSelector;
+	private PropertySelector<String> personDescriptionSelector;
 
 	@Resource(name = "avatarSelector")
-	private Selector<String> avatarSelector;
+	private PropertySelector<String> avatarSelector;
 
 	@Autowired
 	private ImagePathFactory imagePathFactory;

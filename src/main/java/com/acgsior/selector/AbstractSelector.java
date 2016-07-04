@@ -1,17 +1,12 @@
 package com.acgsior.selector;
 
-import org.jsoup.nodes.Document;
-
-import java.util.Optional;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
 
 /**
- * Created by Yove on 16/07/01.
+ * Created by Yove on 16/07/03.
  */
-public abstract class Selector <T> {
-
-	private Selector[] syncSelectors;
-
-	private Selector[] asyncSelectors;
+public abstract class AbstractSelector {
 
 	private String id;
 
@@ -21,22 +16,8 @@ public abstract class Selector <T> {
 
 	private int elementIndex = 0;
 
-	public abstract T select(Document document, Optional<String> parentId);
-
-	public Selector[] getSyncSelectors() {
-		return syncSelectors;
-	}
-
-	public void setSyncSelectors(final Selector[] syncSelectors) {
-		this.syncSelectors = syncSelectors;
-	}
-
-	public Selector[] getAsyncSelectors() {
-		return asyncSelectors;
-	}
-
-	public void setAsyncSelectors(final Selector[] asyncSelectors) {
-		this.asyncSelectors = asyncSelectors;
+	public String getProperty() {
+		return Iterables.getLast(Splitter.on('.').splitToList(id));
 	}
 
 	public String getId() {
