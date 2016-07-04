@@ -1,4 +1,4 @@
-package com.acgsior.selector.impl;
+package com.acgsior.selector.impl.notebook;
 
 import com.acgsior.factory.BeanFactory;
 import com.acgsior.model.Notebook;
@@ -28,6 +28,7 @@ public class NotebookObjectSelector extends ObjectSelector implements ICachedSel
                 Object value = selector.select(element, Optional.of(notebook.getUid()));
                 BeanFactory.setPropertyValueSafely(notebook, selector.getProperty(), value);
             });
+            // FIXME set parent
             notebooks.add(notebook);
         });
         return notebooks;

@@ -9,4 +9,5 @@
     <context:component-scan base-package="com.acgsior.*" />
 
     <import resource="spring-beans.xml" />
+    <import resource="spring-selectors.xml" />
 </beans>

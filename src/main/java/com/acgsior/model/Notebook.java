@@ -30,6 +30,10 @@ public class Notebook extends Base {
         }
     }
 
+    public boolean isNotebookExpired() {
+        return end.compareTo(LocalDate.now()) <= 0;
+    }
+
     public String getName() {
         return name;
     }

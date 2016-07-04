@@ -14,13 +14,21 @@ import java.util.Optional;
  */
 public class DateObjectSelector extends PropertySelector {
 
-	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd", Locale.getDefault());
+    private String datePattern = "yyyyMMdd";
 
 	@Override
 	public LocalDate select(final Element element, final Optional parentId) {
 		String dateText = element.select(getPattern()).get(getElementIndex()).text();
 		// all date with pattern yyyy-MM-dd, so only reserve numbers to convert to date
 		String date = CharMatcher.DIGIT.retainFrom(dateText);
-		return LocalDate.parse(date, FORMATTER);
-	}
+        return LocalDate.parse(date, getFormatter());
+    }
+
+    DateTimeFormatter getFormatter() {
+        return DateTimeFormatter.ofPattern(datePattern, Locale.getDefault());
+    }
+
+    public void setDatePattern(String datePattern) {
+        this.datePattern = datePattern;
+    }
 }

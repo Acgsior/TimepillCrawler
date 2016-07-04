@@ -12,7 +12,7 @@ public class URLFactory {
 	public static final String PERSON = "person";
 
 	public static final String NOTEBOOK = "notebook";
-	public static final String NOTEBOOK_DATE = "notebook";
+	public static final String DATE_NOTEBOOK = "date_notebook";
 
 	public static final String DIARY = "diary";
 

@@ -21,7 +21,7 @@
 				</entry>
 				<entry value="http://timepill.net/notebook/{0}/{1}">
 					<key>
-						<util:constant static-field="com.acgsior.factory.URLFactory.NOTEBOOK_DATE" />
+						<util:constant static-field="com.acgsior.factory.URLFactory.DATE_NOTEBOOK" />
 					</key>
 				</entry>
 				<entry value="http://timepill.net/diary/{0}">
@@ -59,69 +59,4 @@
 		<property name="imagePathFactory" ref="imagePathFactory" />
 	</bean>
 
-	<!-- === SELECTORS === -->
-	<bean id="personNameSelector" name="personNameSelector" class="com.acgsior.selector.impl.TextObjectSelector">
-		<property name="pattern" value=".user-info h2 a" />
-		<property name="id" value="person.name" />
-	</bean>
-
-	<bean id="registerDateSelector" name="registerDateSelector" class="com.acgsior.selector.impl.DateObjectSelector">
-		<property name="pattern" value=".user-info p" />
-		<property name="id" value="person.registerDate" />
-	</bean>
-
-	<bean id="personDescriptionSelector" name="personDescriptionSelector"
-	      class="com.acgsior.selector.impl.TextObjectSelector">
-		<property name="pattern" value=".user-info pre" />
-		<property name="id" value="person.description" />
-	</bean>
-
-	<bean id="avatarSelector" name="avatarSelector" class="com.acgsior.selector.impl.ImageObjectSelector">
-		<property name="pattern" value=".user-info a img" />
-		<property name="attributePattern" value="src" />
-		<property name="imageType">
-			<util:constant static-field="com.acgsior.image.ImageType.AVATAR" />
-		</property>
-		<property name="synchronize" value="true" />
-	</bean>
-
-	<bean id="personSelector" name="personSelector" class="com.acgsior.selector.impl.PersonObjectSelector">
-		<property name="pattern" value="body" />
-		<property name="syncSelectors">
-			<array>
-				<ref bean="personNameSelector" />
-				<ref bean="registerDateSelector" />
-				<ref bean="personDescriptionSelector" />
-			</array>
-		</property>
-	</bean>
-
-	<bean id="notebookIdSelector" name="notebookIdSelector"
-	      class="com.acgsior.selector.impl.notebook.NotebookIdSelector">
-		<property name="pattern" value="h3 a" />
-		<property name="attributePattern" value="href" />
-		<property name="id" value="notebook.tid" />
-	</bean>
-
-	<bean id="notebookNameSelector" name="notebookNameSelector" class="com.acgsior.selector.impl.TextObjectSelector">
-		<property name="pattern" value="h3 a" />
-		<property name="id" value="notebook.name" />
-	</bean>
-
-	<bean id="notebookBeginEndDateSelector" name="notebookBeginEndDateSelector"
-	      class="com.acgsior.selector.impl.notebook.NotebookBeginEndDateSelector">
-		<property name="pattern" value="p" />
-		<property name="id" value="beginEnd" />
-	</bean>
-
-	<bean name="notebookSelector" id="notebookSelector" class="com.acgsior.selector.impl.NotebookObjectSelector">
-		<property name="pattern" value=".notebooks .notebook" />
-		<property name="syncSelectors">
-			<array>
-				<ref bean="notebookIdSelector" />
-				<ref bean="notebookNameSelector" />
-				<ref bean="notebookBeginEndDateSelector" />
-			</array>
-		</property>
-	</bean>
 </beans>
