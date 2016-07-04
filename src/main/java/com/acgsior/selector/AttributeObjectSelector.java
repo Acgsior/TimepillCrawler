@@ -9,14 +9,25 @@ import java.util.Optional;
  */
 public class AttributeObjectSelector extends PropertySelector {
 
-	private String attributePattern;
+    private String attributePattern;
 
-	@Override
-	public String select(final Element element, final Optional parentId) {
-		return element.select(getPattern()).get(getElementIndex()).attr(attributePattern);
-	}
+    @Override
+    public String select(final Element element, final Optional parentId) {
+        String value = element.select(getPattern()).get(getElementIndex()).attr(attributePattern);
+        return postHandle(value);
+    }
 
-	public void setAttributePattern(final String attributePattern) {
-		this.attributePattern = attributePattern;
-	}
+    /**
+     * For override
+     *
+     * @param value
+     * @return
+     */
+    protected String postHandle(String value) {
+        return value;
+    }
+
+    public void setAttributePattern(final String attributePattern) {
+        this.attributePattern = attributePattern;
+    }
 }

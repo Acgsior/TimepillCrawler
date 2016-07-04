@@ -1,6 +1,5 @@
 package com.acgsior.factory;
 
-import com.acgsior.exception.CrawlerInitialException;
 import com.acgsior.image.ImageType;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
@@ -38,7 +37,7 @@ public class ImagePathFactory {
 	}
 
 	public String getImageExtension(String URL) {
-		return Splitter.on('?').splitToList(Iterables.getLast(Splitter.on('.').splitToList(URL))).get(0);
+		return Splitter.on('?').splitToList(Iterables.getLast(Splitter.on('.').split(URL))).get(0);
 	}
 
 	public String getPathWithoutExtension(ImageType imageType, String objectId) {
@@ -55,7 +54,7 @@ public class ImagePathFactory {
 		} catch (Exception e) {
 			String msg = String.format("Create file directory failed for path: %s", path);
 			log.error(msg, e);
-			throw new CrawlerInitialException(msg);
+			// throw new CrawlerInitialException(msg);
 		}
 	}
 

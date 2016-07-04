@@ -1,51 +1,62 @@
 package com.acgsior.model;
 
+
+import org.apache.commons.collections.CollectionUtils;
+
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Created by Yove on 16/07/03.
  */
 public class Notebook extends Base {
 
-	private String name;
-	private String cover;
+    private String name;
+    private String cover;
 
-	private LocalDate begin;
-	private LocalDate end;
+    private LocalDate begin;
+    private LocalDate end;
 
-	public static Notebook newInstance() {
-		return new Notebook();
-	}
+    public static Notebook newInstance() {
+        return new Notebook();
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setBeginEnd(List<LocalDate> dates) {
+        if (CollectionUtils.isNotEmpty(dates) && dates.size() == 2) {
+            begin = dates.get(0);
+            end = dates.get(1);
+        }
+    }
 
-	public void setName(final String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getCover() {
-		return cover;
-	}
+    public void setName(final String name) {
+        this.name = name;
+    }
 
-	public void setCover(final String cover) {
-		this.cover = cover;
-	}
+    public String getCover() {
+        return cover;
+    }
 
-	public LocalDate getBegin() {
-		return begin;
-	}
+    public void setCover(final String cover) {
+        this.cover = cover;
+    }
 
-	public void setBegin(final LocalDate begin) {
-		this.begin = begin;
-	}
+    public LocalDate getBegin() {
+        return begin;
+    }
 
-	public LocalDate getEnd() {
-		return end;
-	}
+    public void setBegin(final LocalDate begin) {
+        this.begin = begin;
+    }
 
-	public void setEnd(final LocalDate end) {
-		this.end = end;
-	}
+    public LocalDate getEnd() {
+        return end;
+    }
+
+    public void setEnd(final LocalDate end) {
+        this.end = end;
+    }
 }

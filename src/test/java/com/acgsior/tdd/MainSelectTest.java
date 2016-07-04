@@ -4,9 +4,12 @@ import com.acgsior.factory.ImagePathFactory;
 import com.acgsior.factory.URLFactory;
 import com.acgsior.image.ImageType;
 import com.acgsior.selector.PropertySelector;
+import com.acgsior.selector.impl.TextObjectSelector;
+import com.acgsior.selector.impl.notebook.NotebookIdSelector;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -43,12 +47,21 @@ public class MainSelectTest {
 	@Resource(name = "avatarSelector")
 	private PropertySelector<String> avatarSelector;
 
+    @Resource(name = "notebookIdSelector")
+    private NotebookIdSelector notebookIdSelector;
+
+    @Resource(name = "notebookNameSelector")
+    private TextObjectSelector notebookNameSelector;
+
+    @Resource(name = "notebookBeginEndDateSelector")
+    private PropertySelector<List<LocalDate>> beginEndDateSelector;
+
 	@Autowired
 	private ImagePathFactory imagePathFactory;
 
 	@Test
-	public void personURLTest() throws IOException {
-		String personURL = tpURLFactory.getURL(URLFactory.PERSON, personId).get();
+    public void personInfoSelectTest() throws IOException {
+        String personURL = tpURLFactory.getURL(URLFactory.PERSON, personId).get();
 		Assert.assertEquals(personURL, "http://timepill.net/people/100079421");
 
 		Document document = Jsoup.connect(personURL).get();
@@ -74,4 +87,24 @@ public class MainSelectTest {
 		String path = imagePathFactory.getPathWithoutExtension(ImageType.IMAGE, "100079421");
 		Assert.assertEquals(path, "/Users/Yove/Temp/timepill/image/100079421");
 	}
+
+    @Test
+    public void notebooksSelectTest() throws IOException {
+        String personURL = tpURLFactory.getURL(URLFactory.PERSON, personId).get();
+        Assert.assertEquals(personURL, "http://timepill.net/people/100079421");
+        Document document = Jsoup.connect(personURL).get();
+        Element element = document.select(".notebooks .notebook").last();
+
+        String id = notebookIdSelector.select(element, Optional.of(personId));
+        Assert.assertEquals(id, "95005");
+
+        String notebookName = notebookNameSelector.select(element, Optional.of(personId));
+        Assert.assertEquals(notebookName, "- Closed Note -");
+
+        List<LocalDate> dates = beginEndDateSelector.select(element, Optional.of(personId));
+        Assert.assertNotNull(dates);
+        Assert.assertEquals(dates.size(), 2);
+        Assert.assertEquals(dates.get(0), LocalDate.of(2010, 7, 29));
+        Assert.assertEquals(dates.get(1), LocalDate.of(2016, 3, 31));
+    }
 }
