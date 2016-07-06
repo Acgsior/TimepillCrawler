@@ -13,11 +13,19 @@ public class Person extends Base {
 
     private String description;
 
-    public static Person newInstance() {
-        return new Person();
+    public static Person newInstance(String personId) {
+        Person instance = new Person();
+        instance.setId(personId);
+        return instance;
     }
 
-    // private Image avatar;
+    public static Person newInstance(String personId) {
+        Person instance = new Person();
+        instance.setId(personId);
+        return instance;
+    }
+
+    private String avatar;
 
     public String getName() {
         return name;
@@ -41,5 +49,13 @@ public class Person extends Base {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

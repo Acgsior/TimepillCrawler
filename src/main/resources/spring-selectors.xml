@@ -30,6 +30,7 @@
 			<util:constant static-field="com.acgsior.image.ImageType.AVATAR" />
 		</property>
 		<property name="synchronize" value="true" />
+		<property name="id" value="person.avatar" />
 	</bean>
 
 	<bean id="personSelector" name="personSelector" class="com.acgsior.selector.impl.PersonObjectSelector">
@@ -39,6 +40,7 @@
 				<ref bean="personNameSelector" />
 				<ref bean="registerDateSelector" />
 				<ref bean="personDescriptionSelector" />
+				<ref bean="avatarSelector" />
 			</array>
 		</property>
 	</bean>
@@ -48,7 +50,7 @@
 		<property name="pattern" value="h3 a" />
 		<property name="attributePattern" value="href" />
 		<property name="split" value="/" />
-		<property name="id" value="notebook.tid" />
+		<property name="id" value="notebook.id" />
 	</bean>
 
 	<bean id="notebookNameSelector" name="notebookNameSelector" class="com.acgsior.selector.impl.TextObjectSelector">
@@ -59,17 +61,28 @@
 	<bean id="notebookBeginEndDateSelector" name="notebookBeginEndDateSelector"
 	      class="com.acgsior.selector.impl.notebook.NotebookBeginEndDateSelector">
 		<property name="pattern" value="p" />
-		<property name="id" value="beginEnd" />
+		<property name="id" value="notebook.beginEnd" />
+	</bean>
+
+	<bean id="coverSelector" name="coverSelector" class="com.acgsior.selector.impl.ImageObjectSelector">
+		<property name="pattern" value="a.cov img.cover" />
+		<property name="attributePattern" value="src" />
+		<property name="imageType">
+			<util:constant static-field="com.acgsior.image.ImageType.COVER" />
+		</property>
+		<property name="synchronize" value="true" />
+		<property name="id" value="notebook.cover" />
 	</bean>
 
 	<bean name="notebookSelector" id="notebookSelector"
 	      class="com.acgsior.selector.impl.notebook.NotebookObjectSelector">
 		<property name="pattern" value=".notebooks .notebook" />
+		<property name="idSelector" ref="notebookIdSelector" />
 		<property name="syncSelectors">
 			<array>
-				<ref bean="notebookIdSelector" />
 				<ref bean="notebookNameSelector" />
 				<ref bean="notebookBeginEndDateSelector" />
+				<ref bean="coverSelector" />
 			</array>
 		</property>
 	</bean>
@@ -78,7 +91,7 @@
 		<property name="pattern" value=".body div.bottom a" />
 		<property name="attributePattern" value="href" />
 		<property name="split" value="/" />
-		<property name="id" value="diary.tid" />
+		<property name="id" value="diary.id" />
 	</bean>
 
 	<bean name="diaryTimeSelector" id="diaryTimeSelector" class="com.acgsior.selector.impl.TimeObjectSelector">
@@ -106,9 +119,9 @@
 	<bean name="diarySelector" id="diarySelector"
 	      class="com.acgsior.selector.impl.diary.DiaryObjectSelector">
 		<property name="pattern" value="#diarys .diary" />
+		<property name="idSelector" ref="diaryIdSelector" />
 		<property name="syncSelectors">
 			<array>
-				<ref bean="diaryIdSelector" />
 				<ref bean="diaryContentSelector" />
 				<ref bean="diaryTimeSelector" />
 				<ref bean="diaryCommentCountSelector" />

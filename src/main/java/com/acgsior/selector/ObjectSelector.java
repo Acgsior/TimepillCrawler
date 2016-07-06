@@ -9,14 +9,24 @@ import java.util.Optional;
  */
 public abstract class ObjectSelector <T> extends AbstractSelector {
 
+    private AttributeObjectSelector idSelector;
+
 	private PropertySelector[] syncSelectors;
 
 	private ObjectSelector[] asyncSelectors;
 
 	public abstract T select(Document document, Optional<String> parentId);
 
-	public PropertySelector[] getSyncSelectors() {
-		return syncSelectors;
+    public AttributeObjectSelector getIdSelector() {
+        return idSelector;
+    }
+
+    public void setIdSelector(AttributeObjectSelector idSelector) {
+        this.idSelector = idSelector;
+    }
+
+    public PropertySelector[] getSyncSelectors() {
+        return syncSelectors;
 	}
 
 	public void setSyncSelectors(final PropertySelector[] syncSelectors) {

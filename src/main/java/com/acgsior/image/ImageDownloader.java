@@ -2,6 +2,7 @@ package com.acgsior.image;
 
 import com.acgsior.factory.ImagePathFactory;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -10,15 +11,17 @@ import java.nio.file.Paths;
  */
 public abstract class ImageDownloader {
 
-	protected ImagePathFactory imagePathFactory;
+    protected ImagePathFactory imagePathFactory;
 
-	public Path generateImagePath(ImageType type, String URL, String imageId) {
-		String imagePath = new StringBuilder().append(imagePathFactory.getPathWithoutExtension(type, imageId)).append('.')
-				.append(imagePathFactory.getImageExtension(URL)).toString();
-		return Paths.get(imagePath);
-	}
+    public abstract Object downloadImage(ImageType type, String URL, String imageId) throws IOException;
 
-	public void setImagePathFactory(final ImagePathFactory imagePathFactory) {
-		this.imagePathFactory = imagePathFactory;
-	}
+    public Path generateImagePath(ImageType type, String URL, String imageId) {
+        String imagePath = new StringBuilder().append(imagePathFactory.getPathWithoutExtension(type, imageId)).append('.')
+                .append(imagePathFactory.getImageExtension(URL)).toString();
+        return Paths.get(imagePath);
+    }
+
+    public void setImagePathFactory(final ImagePathFactory imagePathFactory) {
+        this.imagePathFactory = imagePathFactory;
+    }
 }

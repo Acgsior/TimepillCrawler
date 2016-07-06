@@ -18,13 +18,12 @@ public class PersonObjectSelector extends ObjectSelector implements ICachedSelec
     @Override
     public Person select(Document document, Optional parentId) {
         Element element = document.select(getPattern()).get(getElementIndex());
-        Person person = Person.newInstance();
+        Person person = Person.newInstance((String) parentId.get());
 
         Arrays.stream(getSyncSelectors()).forEach(selector -> {
-            Object value = selector.select(element, Optional.of(person.getUid()));
+            Object value = selector.select(element, Optional.of(person.getId()));
             BeanFactory.setPropertyValueSafely(person, selector.getProperty(), value);
         });
-        person.setTid((String) parentId.get());
 
         cache(person);
         return person;

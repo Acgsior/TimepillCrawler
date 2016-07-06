@@ -17,10 +17,10 @@ public class Notebook extends Base {
     private LocalDate begin;
     private LocalDate end;
 
-    // private Image cover;
-
-    public static Notebook newInstance() {
-        return new Notebook();
+    public static Notebook newInstance(String notebookId) {
+        Notebook instance = new Notebook();
+        instance.setId(notebookId);
+        return instance;
     }
 
     public void setBeginEnd(List<LocalDate> dates) {

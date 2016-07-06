@@ -1,7 +1,6 @@
 package com.acgsior.selector.impl;
 
-import com.acgsior.image.ImageAsyncDownloader;
-import com.acgsior.image.ImageSyncDownloader;
+import com.acgsior.image.ImageDownloader;
 import com.acgsior.image.ImageType;
 import com.acgsior.selector.AttributeObjectSelector;
 import org.jsoup.nodes.Element;
@@ -17,44 +16,44 @@ import java.util.Optional;
  */
 public class ImageObjectSelector extends AttributeObjectSelector {
 
-	private static Logger logger = LoggerFactory.getLogger(ImageObjectSelector.class);
+    private static Logger logger = LoggerFactory.getLogger(ImageObjectSelector.class);
 
-	private boolean synchronize;
+    private boolean synchronize;
 
-	@Autowired
-	private ImageSyncDownloader imageSyncDownloader;
+    @Autowired
+    private ImageDownloader syncDownloader;
 
-	private ImageAsyncDownloader imageAsyncDownloader;
+    private ImageDownloader asyncDownloader;
 
-	private ImageType imageType;
+    private ImageType imageType;
 
-	@Override
-	public String select(final Element element, final Optional parentId) {
-		String imageSrc = standardizeImageURL(super.select(element, parentId));
-		if (synchronize) {
-			try {
-				imageSyncDownloader.downloadImage(imageType, imageSrc, String.valueOf(parentId.get()));
-			} catch (IOException e) {
-				logger.error(String.format("Failed to download image: %s", imageSrc));
-			}
-		} else {
-			imageAsyncDownloader.downloadImage(imageType, imageSrc, String.valueOf(parentId.get()));
-		}
-		return String.valueOf(parentId.get());
-	}
+    @Override
+    public String select(final Element element, final Optional parentId) {
+        String imageSrc = standardizeImageURL(super.select(element, parentId));
+        try {
+            if (synchronize) {
+                syncDownloader.downloadImage(imageType, imageSrc, String.valueOf(parentId.get()));
+            } else {
+                asyncDownloader.downloadImage(imageType, imageSrc, String.valueOf(parentId.get()));
+            }
+        } catch (IOException e) {
+            logger.error(String.format("Failed to download image: %s", imageSrc));
+        }
+        return String.valueOf(parentId.get());
+    }
 
-	protected String standardizeImageURL(String URL) {
-		if (!URL.startsWith("http:")) {
-			return "http:".concat(URL);
-		}
-		return URL;
-	}
+    protected String standardizeImageURL(String URL) {
+        if (!URL.startsWith("http:")) {
+            return "http:".concat(URL);
+        }
+        return URL;
+    }
 
-	public void setSynchronize(final boolean synchronize) {
-		this.synchronize = synchronize;
-	}
+    public void setSynchronize(final boolean synchronize) {
+        this.synchronize = synchronize;
+    }
 
-	public void setImageType(final ImageType imageType) {
-		this.imageType = imageType;
-	}
+    public void setImageType(final ImageType imageType) {
+        this.imageType = imageType;
+    }
 }

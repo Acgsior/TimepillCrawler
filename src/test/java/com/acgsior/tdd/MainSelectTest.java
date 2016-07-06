@@ -112,7 +112,7 @@ public class MainSelectTest {
         Assert.assertEquals("100079421", avatarImageName);
 
         Person person = personSelector.select(document, Optional.of("100079421"));
-        Assert.assertEquals("100079421", person.getTid());
+        Assert.assertEquals("100079421", person.getId());
         Assert.assertEquals("Excelsior†", person.getName());
         Assert.assertEquals(LocalDate.of(2012, 4, 5), person.getRegisterDate());
     }
@@ -150,7 +150,7 @@ public class MainSelectTest {
         Assert.assertTrue(notebooks.size() > 0);
 
         Notebook notebook = Iterables.getLast(notebooks);
-        Assert.assertEquals("95005", notebook.getTid());
+        Assert.assertEquals("95005", notebook.getId());
         Assert.assertEquals("- Closed Note -", notebook.getName());
         Assert.assertEquals(LocalDate.of(2010, 7, 29), notebook.getBegin());
         Assert.assertEquals(LocalDate.of(2016, 3, 31), notebook.getEnd());
@@ -185,7 +185,7 @@ public class MainSelectTest {
         Assert.assertTrue(dairies.size() > 0);
 
         Diary diary = Iterables.getLast(dairies);
-        Assert.assertEquals("296135", diary.getTid());
+        Assert.assertEquals("296135", diary.getId());
         Assert.assertTrue(StringUtils.isNoneBlank(diary.getContent()));
         Assert.assertEquals(LocalTime.of(15, 32), diary.getDiaryTime());
         Assert.assertEquals(LocalDate.of(2010, 8, 4), diary.getDiaryDate());

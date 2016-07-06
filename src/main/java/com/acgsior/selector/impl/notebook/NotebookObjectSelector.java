@@ -23,9 +23,10 @@ public class NotebookObjectSelector extends ObjectSelector implements ICachedSel
         List<Notebook> notebooks = new ArrayList<>();
 
         elements.forEach(element -> {
-            Notebook notebook = Notebook.newInstance();
+            String notebookId = getIdSelector().select(element, parentId);
+            Notebook notebook = Notebook.newInstance(notebookId);
             Arrays.stream(getSyncSelectors()).forEach(selector -> {
-                Object value = selector.select(element, Optional.of(notebook.getUid()));
+                Object value = selector.select(element, Optional.of(notebookId));
                 BeanFactory.setPropertyValueSafely(notebook, selector.getProperty(), value);
             });
             // FIXME set parent

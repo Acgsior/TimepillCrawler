@@ -31,11 +31,13 @@ public class DiaryObjectSelector extends ObjectSelector implements ICachedSelect
         LocalDate diaryDate = diaryDateSelector.select(document, Optional.empty());
 
         elements.forEach(element -> {
-            Diary diary = Diary.newInstance();
+            Diary diary = Diary.newInstance(getIdSelector().select(element, parentId));
+
             Arrays.stream(getSyncSelectors()).forEach(selector -> {
-                Object value = selector.select(element, Optional.of(diary.getUid()));
+                Object value = selector.select(element, Optional.of(diary.getId()));
                 BeanFactory.setPropertyValueSafely(diary, selector.getProperty(), value);
             });
+
             diary.setDiaryDate(diaryDate);
             dairies.add(diary);
         });

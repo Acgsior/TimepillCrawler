@@ -16,11 +16,12 @@ public class Diary extends Base {
 
     private int commentCount;
 
-    // private Image image;
+    private String image;
 
-
-    public static Diary newInstance() {
-        return new Diary();
+    public static Diary newInstance(String diaryId) {
+        Diary instance = new Diary();
+        instance.setId(diaryId);
+        return instance;
     }
 
     public String getContent() {
@@ -53,5 +54,13 @@ public class Diary extends Base {
 
     public void setCommentCount(int commentCount) {
         this.commentCount = commentCount;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
