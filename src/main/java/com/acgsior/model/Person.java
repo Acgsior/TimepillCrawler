@@ -12,20 +12,13 @@ public class Person extends Base {
     private LocalDate registerDate;
 
     private String description;
-
-    public static Person newInstance(String personId) {
-        Person instance = new Person();
-        instance.setId(personId);
-        return instance;
-    }
-
-    public static Person newInstance(String personId) {
-        Person instance = new Person();
-        instance.setId(personId);
-        return instance;
-    }
-
     private String avatar;
+
+    public static Person newInstance(String personId) {
+        Person instance = new Person();
+        instance.setId(personId);
+        return instance;
+    }
 
     public String getName() {
         return name;
