@@ -16,6 +16,11 @@ import java.util.List;
 import java.util.Optional;
 
 /**
+ * TODO
+ * 1. invoke selector to select next month link, if exist generate new diary selector to invoke
+ * 2. new diary selector should be submit to executor
+ * 3. then select diary content
+ *
  * Created by mqin on 7/4/16.
  */
 public class DiaryObjectSelector extends ObjectSelector implements ICachedSelector {
