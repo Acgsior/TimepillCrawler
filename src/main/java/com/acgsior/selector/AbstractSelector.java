@@ -8,47 +8,37 @@ import com.google.common.collect.Iterables;
  */
 public abstract class AbstractSelector {
 
-	private String id;
+    private String id;
 
-	private String parentId;
+    private int elementIndex = 0;
 
-	private String pattern;
+    private String pattern;
 
-	private int elementIndex = 0;
+    public String getProperty() {
+        return Iterables.getLast(Splitter.on('.').splitToList(id));
+    }
 
-	public String getProperty() {
-		return Iterables.getLast(Splitter.on('.').splitToList(id));
-	}
+    public String getId() {
+        return id;
+    }
 
-	public String getId() {
-		return id;
-	}
+    public void setId(final String id) {
+        this.id = id;
+    }
 
-	public void setId(final String id) {
-		this.id = id;
-	}
+    public int getElementIndex() {
+        return elementIndex;
+    }
 
-	public String getParentId() {
-		return parentId;
-	}
+    public void setElementIndex(final int elementIndex) {
+        this.elementIndex = elementIndex;
+    }
 
-	public void setParentId(final String parentId) {
-		this.parentId = parentId;
-	}
+    public String getPattern() {
+        return pattern;
+    }
 
-	public String getPattern() {
-		return pattern;
-	}
-
-	public void setPattern(final String pattern) {
-		this.pattern = pattern;
-	}
-
-	public int getElementIndex() {
-		return elementIndex;
-	}
-
-	public void setElementIndex(final int elementIndex) {
-		this.elementIndex = elementIndex;
-	}
+    public void setPattern(String pattern) {
+        this.pattern = pattern;
+    }
 }

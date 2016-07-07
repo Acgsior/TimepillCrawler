@@ -6,6 +6,8 @@
        http://www.springframework.org/schema/util
        http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 
+	<bean id="applicationContextProvider" class="com.acgsior.provider.ApplicationContextProvider" />
+
 	<bean id="tpURLFactory" name="tpURLFactory" class="com.acgsior.factory.URLFactory">
 		<constructor-arg name="URLMap">
 			<map>

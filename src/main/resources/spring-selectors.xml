@@ -33,7 +33,7 @@
 		<property name="id" value="person.avatar" />
 	</bean>
 
-	<bean id="personSelector" name="personSelector" class="com.acgsior.selector.impl.PersonObjectSelector">
+	<bean id="personSelector" name="personSelector" class="com.acgsior.selector.impl.person.PersonObjectSelector">
 		<property name="pattern" value="body" />
 		<property name="syncSelectors">
 			<array>
@@ -51,6 +51,14 @@
 		<property name="attributePattern" value="href" />
 		<property name="split" value="/" />
 		<property name="id" value="notebook.id" />
+	</bean>
+
+	<bean id="notebookLinkSelector" name="notebookLinkSelector"
+	      class="com.acgsior.selector.impl.LinkAttributeSelector">
+		<property name="pattern" value="h3 a" />
+		<property name="attributePattern" value="href" />
+		<property name="standardize" value="true" />
+		<property name="id" value="notebook.location" />
 	</bean>
 
 	<bean id="notebookNameSelector" name="notebookNameSelector" class="com.acgsior.selector.impl.TextObjectSelector">
@@ -94,6 +102,13 @@
 		<property name="id" value="diary.id" />
 	</bean>
 
+	<bean name="diaryLinkSelector" id="diaryLinkSelector" class="com.acgsior.selector.impl.LinkAttributeSelector">
+		<property name="pattern" value=".body div.bottom a" />
+		<property name="attributePattern" value="href" />
+		<property name="standardize" value="true" />
+		<property name="id" value="diary.id" />
+	</bean>
+
 	<bean name="diaryTimeSelector" id="diaryTimeSelector" class="com.acgsior.selector.impl.TimeObjectSelector">
 		<property name="pattern" value=".body div.title" />
 		<property name="id" value="diary.diaryTime" />
@@ -116,7 +131,7 @@
 		<property name="id" value="diary.commentCount" />
 	</bean>
 
-	<bean name="diarySelector" id="diarySelector"
+	<bean name="diarySelector" id="diarySelector" scope="prototype"
 	      class="com.acgsior.selector.impl.diary.DiaryObjectSelector">
 		<property name="pattern" value="#diarys .diary" />
 		<property name="idSelector" ref="diaryIdSelector" />

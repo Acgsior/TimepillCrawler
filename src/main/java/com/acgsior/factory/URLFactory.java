@@ -25,5 +25,4 @@ public class URLFactory {
 	public Optional<String> getURL(String URLKey, Object... parameters) {
 		return URLMap.containsKey(URLKey) ? Optional.of(MessageFormat.format(URLMap.get(URLKey), parameters)) : Optional.empty();
 	}
-
 }

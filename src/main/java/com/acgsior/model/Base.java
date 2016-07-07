@@ -5,31 +5,41 @@ package com.acgsior.model;
  */
 public abstract class Base {
 
-	private String id;
+    private String id;
 
-	private Base parent;
+    private String parent;
 
-	protected Base() {
+    private String location;
 
-	}
+    protected Base() {
 
-	protected Base(String tid) {
-		this.id = tid;
-	}
+    }
 
-	public String getId() {
-		return id;
-	}
+    protected Base(String id) {
+        this.id = id;
+    }
 
-	public void setId(final String id) {
-		this.id = id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public Base getParent() {
-		return parent;
-	}
+    public void setId(final String id) {
+        this.id = id;
+    }
 
-	public void setParent(final Base parent) {
-		this.parent = parent;
-	}
+    public String getParent() {
+        return parent;
+    }
+
+    public void setParent(final String parent) {
+        this.parent = parent;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 }

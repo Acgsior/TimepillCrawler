@@ -1,9 +1,10 @@
-package com.acgsior.selector.impl;
+package com.acgsior.selector.impl.person;
 
 import com.acgsior.factory.BeanFactory;
 import com.acgsior.model.Person;
 import com.acgsior.selector.ICachedSelector;
 import com.acgsior.selector.ObjectSelector;
+import com.acgsior.selector.impl.notebook.NotebookObjectSelector;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
@@ -14,6 +15,8 @@ import java.util.Optional;
  * Created by mqin on 7/4/16.
  */
 public class PersonObjectSelector extends ObjectSelector implements ICachedSelector {
+
+    private NotebookObjectSelector notebookSelector;
 
     @Override
     public Person select(Document document, Optional parentId) {
@@ -26,10 +29,16 @@ public class PersonObjectSelector extends ObjectSelector implements ICachedSelec
         });
 
         cache(person);
+
+        notebookSelector.select(document, parentId);
         return person;
     }
 
     @Override
     public void cache(Object value) {
+    }
+
+    public void setNotebookSelector(NotebookObjectSelector notebookSelector) {
+        this.notebookSelector = notebookSelector;
     }
 }
