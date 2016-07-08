@@ -1,6 +1,8 @@
 package com.acgsior.selector;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.util.Optional;
 
@@ -9,11 +11,17 @@ import java.util.Optional;
  */
 public class AttributeObjectSelector extends PropertySelector {
 
+    protected static final String DEFAULT_VALUE = StringUtils.EMPTY;
+
     private String attributePattern;
 
     @Override
     public String select(final Element element, final Optional parentId) {
-        String value = element.select(getPattern()).get(getElementIndex()).attr(attributePattern);
+        Elements elements = element.select(getPattern());
+        String value = DEFAULT_VALUE;
+        if (!elements.isEmpty()) {
+            value = elements.get(getElementIndex()).attr(attributePattern);
+        }
         return postHandle(value);
     }
 

@@ -31,7 +31,7 @@ public class DiaryObjectSelector extends ObjectSelector implements ICachedSelect
     @Override
     public List<Diary> select(Document document, Optional parentId) {
         Elements elements = document.select(getPattern());
-        List<Diary> dairies = new ArrayList<>();
+        List<Diary> diaries = new ArrayList<>();
 
         LocalDate diaryDate = diaryDateSelector.select(document, Optional.empty());
 
@@ -44,9 +44,12 @@ public class DiaryObjectSelector extends ObjectSelector implements ICachedSelect
             });
 
             diary.setDiaryDate(diaryDate);
-            dairies.add(diary);
+            diaries.add(diary);
         });
-        return dairies;
+
+        cache(diaries);
+
+        return diaries;
     }
 
     @Override

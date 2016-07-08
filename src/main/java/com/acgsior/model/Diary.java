@@ -18,6 +18,8 @@ public class Diary extends Base {
 
     private String image;
 
+    private String nextMonthLocation;
+
     public static Diary newInstance(String diaryId) {
         Diary instance = new Diary();
         instance.setId(diaryId);
@@ -62,5 +64,13 @@ public class Diary extends Base {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getNextMonthLocation() {
+        return nextMonthLocation;
+    }
+
+    public void setNextMonthLocation(String nextMonthLocation) {
+        this.nextMonthLocation = nextMonthLocation;
     }
 }

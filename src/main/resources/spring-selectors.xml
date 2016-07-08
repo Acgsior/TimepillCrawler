@@ -131,8 +131,7 @@
 		<property name="id" value="diary.commentCount" />
 	</bean>
 
-	<bean name="diarySelector" id="diarySelector" scope="prototype"
-	      class="com.acgsior.selector.impl.diary.DiaryObjectSelector">
+	<bean name="diarySelector" id="diarySelector" class="com.acgsior.selector.impl.diary.DiaryObjectSelector">
 		<property name="pattern" value="#diarys .diary" />
 		<property name="idSelector" ref="diaryIdSelector" />
 		<property name="syncSelectors">
@@ -143,5 +142,21 @@
 			</array>
 		</property>
 		<property name="diaryDateSelector" ref="diaryDateSelector" />
+	</bean>
+
+	<bean id="diaryLinkNextMonthSelector" name="diaryLinkNextMonthSelector"
+	      class="com.acgsior.selector.impl.LinkAttributeSelector">
+		<property name="pattern" value=".next_moon" />
+		<property name="attributePattern" value="href" />
+		<property name="standardize" value="true" />
+		<property name="id" value="diary.nextMonthLocation" />
+	</bean>
+
+	<bean id="diaryLinkSameMonthSelector" name="diaryLinkSameMonthSelector"
+	      class="com.acgsior.selector.impl.LinkAttributeSelector">
+		<property name="pattern" value="div.calendar-box table tbody a" />
+		<property name="attributePattern" value="href" />
+		<property name="standardize" value="true" />
+		<property name="id" value="diary.nextMonthLocation" />
 	</bean>
 </beans>
