@@ -2,9 +2,9 @@ package com.acgsior.selector.impl.notebook;
 
 import com.acgsior.factory.BeanFactory;
 import com.acgsior.model.Notebook;
-import com.acgsior.provider.BeanProvider;
 import com.acgsior.selector.ICachedSelector;
 import com.acgsior.selector.ObjectSelector;
+import com.acgsior.selector.impl.diary.DiaryObjectSelector;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
@@ -17,6 +17,8 @@ import java.util.Optional;
  * Created by Yove on 16/07/03.
  */
 public class NotebookObjectSelector extends ObjectSelector implements ICachedSelector {
+
+    private DiaryObjectSelector diaryObjectSelector;
 
     @Override
     public List<Notebook> select(final Document document, final Optional parentId) {
@@ -37,8 +39,6 @@ public class NotebookObjectSelector extends ObjectSelector implements ICachedSel
 
         cache(notebooks);
 
-        notebooks.forEach(notebook ->
-                BeanProvider.getDiarySelectorWrapper().select(notebook.getLocation(), notebook.getId(), Boolean.TRUE));
         return notebooks;
     }
 

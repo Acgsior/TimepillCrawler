@@ -144,19 +144,9 @@
 		<property name="diaryDateSelector" ref="diaryDateSelector" />
 	</bean>
 
-	<bean id="diaryLinkNextMonthSelector" name="diaryLinkNextMonthSelector"
-	      class="com.acgsior.selector.impl.LinkAttributeSelector">
-		<property name="pattern" value=".next_moon" />
-		<property name="attributePattern" value="href" />
-		<property name="standardize" value="true" />
-		<property name="id" value="diary.nextMonthLocation" />
-	</bean>
-
-	<bean id="diaryLinkSameMonthSelector" name="diaryLinkSameMonthSelector"
-	      class="com.acgsior.selector.impl.LinkAttributeSelector">
+	<bean id="diaryLinksSelector" name="diaryLinksSelector"
+	      class="com.acgsior.selector.impl.diary.DiaryLinksSelector">
 		<property name="pattern" value="div.calendar-box table tbody a" />
-		<property name="attributePattern" value="href" />
-		<property name="standardize" value="true" />
-		<property name="id" value="diary.nextMonthLocation" />
+		<property name="nextMonthPattern" value=".next_moon" />
 	</bean>
 </beans>
