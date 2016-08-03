@@ -14,7 +14,7 @@ import java.util.Optional;
 /**
  * Created by mqin on 7/4/16.
  */
-public class PersonObjectSelector extends ObjectSelector implements ICachedSelector {
+public class PersonObjectSelector extends ObjectSelector<Person> implements ICachedSelector<Person> {
 
     private NotebookObjectSelector notebookSelector;
 
@@ -35,7 +35,8 @@ public class PersonObjectSelector extends ObjectSelector implements ICachedSelec
     }
 
     @Override
-    public void cache(Object value) {
+    public void cache(Person value) {
+        logger.info(value.toString());
     }
 
     public void setNotebookSelector(NotebookObjectSelector notebookSelector) {

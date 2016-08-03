@@ -40,9 +40,10 @@
 				<ref bean="personNameSelector" />
 				<ref bean="registerDateSelector" />
 				<ref bean="personDescriptionSelector" />
-				<ref bean="avatarSelector" />
+				<!--<ref bean="avatarSelector" />-->
 			</array>
 		</property>
+		<property name="notebookSelector" ref="notebookSelector" />
 	</bean>
 
 	<bean id="notebookIdSelector" name="notebookIdSelector"
@@ -90,9 +91,12 @@
 			<array>
 				<ref bean="notebookNameSelector" />
 				<ref bean="notebookBeginEndDateSelector" />
-				<ref bean="coverSelector" />
+				<!--<ref bean="coverSelector" />-->
+				<ref bean="notebookLinkSelector" />
 			</array>
 		</property>
+		<property name="diaryLinksSelector" ref="diaryLinksSelector" />
+		<property name="diarySelector" ref="diarySelector" />
 	</bean>
 
 	<bean name="diaryIdSelector" id="diaryIdSelector" class="com.acgsior.selector.impl.LastSplitAttributeSelector">

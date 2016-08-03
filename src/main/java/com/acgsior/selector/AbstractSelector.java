@@ -2,11 +2,15 @@ package com.acgsior.selector;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by Yove on 16/07/03.
  */
 public abstract class AbstractSelector {
+
+    protected static Logger logger = LoggerFactory.getLogger(AbstractSelector.class);
 
     private String id;
 

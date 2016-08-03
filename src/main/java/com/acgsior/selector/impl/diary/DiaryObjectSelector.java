@@ -20,10 +20,10 @@ import java.util.Optional;
  * 1. invoke selector to select next month link, if exist generate new diary selector to invoke
  * 2. new diary selector should be submit to executor
  * 3. then select diary content
- *
+ * <p>
  * Created by mqin on 7/4/16.
  */
-public class DiaryObjectSelector extends ObjectSelector implements ICachedSelector {
+public class DiaryObjectSelector extends ObjectSelector<List<Diary>> implements ICachedSelector<List<Diary>> {
 
     @Resource(name = "diaryDateSelector")
     private DateObjectSelector diaryDateSelector;
@@ -53,8 +53,8 @@ public class DiaryObjectSelector extends ObjectSelector implements ICachedSelect
     }
 
     @Override
-    public void cache(Object value) {
-
+    public void cache(List<Diary> value) {
+        value.forEach(diary -> logger.info(diary.toString()));
     }
 
     public void setDiaryDateSelector(DateObjectSelector diaryDateSelector) {
