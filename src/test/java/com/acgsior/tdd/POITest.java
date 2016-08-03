@@ -3,6 +3,8 @@ package com.acgsior.tdd;
 import com.acgsior.bootstrap.ICleanFolder;
 import com.acgsior.bootstrap.ICreateFolder;
 import com.acgsior.factory.DiaryDocumentPathFactory;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,10 +12,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 /**
  * Created by mqin on 8/3/16.
@@ -22,30 +26,32 @@ import java.nio.file.Paths;
 @ContextConfiguration(locations = "classpath:spring-context.xml")
 public class POITest implements ICreateFolder, ICleanFolder {
 
-    @Resource(name = "diaryDocumentPathFactory")
-    private DiaryDocumentPathFactory diaryDocumentPathFactory;
+	@Resource(name = "diaryDocumentPathFactory")
+	private DiaryDocumentPathFactory diaryDocumentPathFactory;
 
-    @Test
-    public void wordDocumentFolderTest() throws IOException {
-        Path dir = Paths.get(diaryDocumentPathFactory.getBasePath());
-        Path fwfDir = Paths.get(diaryDocumentPathFactory.getBasePath().concat("folder_with_file/"));
-        Path ffDir = Paths.get(diaryDocumentPathFactory.getBasePath().concat("folder_with_file/file.txt"));
-        Path fwofDir = Paths.get(diaryDocumentPathFactory.getBasePath().concat("folder_without_file/"));
-        Path fDir = Paths.get(diaryDocumentPathFactory.getBasePath().concat("file.txt"));
+	@Test
+	public void wordDocumentFolderTest() throws IOException {
+		Path dir = Paths.get(diaryDocumentPathFactory.getBasePath());
+		Path fwfDir = Paths.get(diaryDocumentPathFactory.getBasePath().concat("folder_with_file/"));
+		Path ffDir = Paths.get(diaryDocumentPathFactory.getBasePath().concat("folder_with_file/file.txt"));
+		Path fwofDir = Paths.get(diaryDocumentPathFactory.getBasePath().concat("folder_without_file/"));
+		Path fDir = Paths.get(diaryDocumentPathFactory.getBasePath().concat("file.txt"));
 
-        createFolder(fwfDir);
-        createFolder(fwofDir);
-        Files.createFile(ffDir, getMacFolderAttributes());
-        Files.createFile(fDir, getMacFolderAttributes());
+		createFolder(fwfDir);
+		createFolder(fwofDir);
+		Files.createFile(ffDir, getMacFolderAttributes());
+		Files.createFile(fDir, getMacFolderAttributes());
 
-        diaryDocumentPathFactory.setCleanFoldFirst(true);
-        diaryDocumentPathFactory.cleanFolder(dir);
+		diaryDocumentPathFactory.setCleanFoldFirst(true);
+		diaryDocumentPathFactory.cleanFolder(dir);
 
-        Assert.assertEquals(Files.walk(dir).count(), 1);
-    }
+		Assert.assertEquals(Files.walk(dir).count(), 1);
+	}
 
-    @Test
-    public void wordDocumentGenerateTest() {
+	@Test
+	public void wordDocumentGenerateTest() throws IOException {
+		XWPFDocument document =
+				new XWPFDocument(diaryDocumentPathFactory.createDiaryDocument(Optional.of("testMan"), Optional.of("testMan")));
+	}
 
-    }
 }

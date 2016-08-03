@@ -3,8 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/TimepillCrawler.iml" filepath="$PROJECT_DIR$/.idea/modules/TimepillCrawler.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TimepillCrawler_main.iml" filepath="$PROJECT_DIR$/.idea/modules/TimepillCrawler_main.iml" group="TimepillCrawler" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TimepillCrawler_test.iml" filepath="$PROJECT_DIR$/.idea/modules/TimepillCrawler_test.iml" group="TimepillCrawler" />
     </modules>
   </component>
 </project>
