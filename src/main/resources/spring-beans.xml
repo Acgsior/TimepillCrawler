@@ -8,6 +8,8 @@
 
 	<bean id="applicationContextProvider" class="com.acgsior.provider.ApplicationContextProvider" />
 
+	<!-- === FACTORIES ===  -->
+
 	<bean id="tpURLFactory" name="tpURLFactory" class="com.acgsior.factory.URLFactory">
 		<constructor-arg name="URLMap">
 			<map>
@@ -38,23 +40,29 @@
 	<bean id="imagePathFactory" name="imagePathFactory" class="com.acgsior.factory.ImagePathFactory">
 		<constructor-arg name="imageTypeBasePathMap">
 			<map>
-				<entry value="/Users/Yove/Temp/timepill/avatar/">
+				<entry value="/Users/mqin/Temp/timepill/avatar/">
 					<key>
 						<util:constant static-field="com.acgsior.image.ImageType.AVATAR" />
 					</key>
 				</entry>
-				<entry value="/Users/Yove/Temp/timepill/cover/">
+				<entry value="/Users/mqin/Temp/timepill/cover/">
 					<key>
 						<util:constant static-field="com.acgsior.image.ImageType.COVER" />
 					</key>
 				</entry>
-				<entry value="/Users/Yove/Temp/timepill/image/">
+				<entry value="/Users/mqin/Temp/timepill/image/">
 					<key>
 						<util:constant static-field="com.acgsior.image.ImageType.IMAGE" />
 					</key>
 				</entry>
 			</map>
 		</constructor-arg>
+	</bean>
+
+	<bean id="diaryDocumentPathFactory" name="diaryDocumentPathFactory"
+	      class="com.acgsior.factory.DiaryDocumentPathFactory">
+		<constructor-arg name="cleanFoldFirst" value="false" />
+		<constructor-arg name="basePath" value="/Users/mqin/Temp/timepill/result/" />
 	</bean>
 
 	<bean id="imageSyncDownloader" name="imageSyncDownloader" class="com.acgsior.image.ImageSyncDownloader">
