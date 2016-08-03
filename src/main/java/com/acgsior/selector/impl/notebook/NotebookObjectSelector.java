@@ -71,7 +71,6 @@ public class NotebookObjectSelector extends ObjectSelector<List<Notebook>> imple
     @Override
     public void cache(List<Notebook> value) {
         value.forEach(notebook -> {
-            // logger.info(notebook.toString();
             getCacheManager().cacheNotebook(notebook);
         });
     }

@@ -36,7 +36,6 @@ public class PersonObjectSelector extends ObjectSelector<Person> implements ICac
 
     @Override
     public void cache(Person value) {
-        // logger.info(value.toString());
         getCacheManager().cachePerson(value);
     }
 

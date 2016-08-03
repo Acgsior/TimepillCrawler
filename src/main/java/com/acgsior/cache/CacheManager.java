@@ -20,7 +20,7 @@ public class CacheManager {
 
     private TreeMap<String, Notebook> notebookCache = Maps.newTreeMap();
 
-    private TreeMap<String, TreeMap<String, Diary>> diaryCache = Maps.newTreeMap();
+    private TreeMap<String, TreeMap<String, Diary>> notebookDiaryCache = Maps.newTreeMap();
 
     public void cachePerson(Person person) {
         this.personCache = person;
@@ -28,11 +28,11 @@ public class CacheManager {
 
     public void cacheNotebook(Notebook notebook) {
         notebookCache.put(notebook.getId(), notebook);
-        diaryCache.put(notebook.getId(), Maps.newTreeMap());
+        notebookDiaryCache.put(notebook.getId(), Maps.newTreeMap());
     }
 
     public void cacheDiary(Diary diary) {
-        diaryCache.get(diary.getParent()).put(diary.getId(), diary);
+        notebookDiaryCache.get(diary.getParent()).put(diary.getId(), diary);
     }
 
     public int getCachedNotebookCount() {
@@ -40,12 +40,25 @@ public class CacheManager {
     }
 
     public int getCacheDiaryCount() {
-        return diaryCache.values().stream().mapToInt(TreeMap::size).sum();
+        return notebookDiaryCache.values().stream().mapToInt(TreeMap::size).sum();
     }
 
     public void logCacheStatus() {
-        logger.info("Cached Person: " + personCache);
         logger.info("Cached Count of Notebook: " + getCachedNotebookCount());
         logger.info("Cached Count of Diary: " + getCacheDiaryCount());
+    }
+
+    public void logCachedPerson() {
+        logger.info("Cached Person: " + personCache);
+    }
+
+    public void logCachedNotebooks() {
+        notebookCache.values().forEach(notebook -> logger.info(notebook.toString()));
+    }
+
+    public void logCachedDiaries() {
+        notebookDiaryCache.values().forEach(notebookDiaryCache -> {
+            notebookDiaryCache.values().forEach(diary -> logger.info(diary.toString()));
+        });
     }
 }

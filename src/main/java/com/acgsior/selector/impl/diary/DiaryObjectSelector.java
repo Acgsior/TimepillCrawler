@@ -56,7 +56,6 @@ public class DiaryObjectSelector extends ObjectSelector<List<Diary>> implements 
     @Override
     public void cache(List<Diary> value) {
         value.forEach(diary -> {
-            // logger.info(diary.toString())
             getCacheManager().cacheDiary(diary);
         });
     }
