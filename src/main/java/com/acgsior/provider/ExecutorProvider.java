@@ -12,7 +12,7 @@ public class ExecutorProvider {
 
     public static ExecutorService getDiaryExecutor() {
         if (diaryExecutor == null) {
-            synchronized (diaryExecutor) {
+            synchronized (ExecutorProvider.class) {
                 if (diaryExecutor == null) {
                     diaryExecutor = Executors.newFixedThreadPool(1000);
                 }

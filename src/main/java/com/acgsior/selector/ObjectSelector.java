@@ -1,5 +1,6 @@
 package com.acgsior.selector;
 
+import com.acgsior.cache.CacheManager;
 import org.jsoup.nodes.Document;
 
 import java.util.Optional;
@@ -14,6 +15,8 @@ public abstract class ObjectSelector <T> extends AbstractSelector {
 	private PropertySelector[] syncSelectors;
 
 	private ObjectSelector[] asyncSelectors;
+
+	private CacheManager cacheManager;
 
 	public abstract T select(Document document, Optional<String> parentId);
 
@@ -39,5 +42,13 @@ public abstract class ObjectSelector <T> extends AbstractSelector {
 
 	public void setAsyncSelectors(final ObjectSelector[] asyncSelectors) {
 		this.asyncSelectors = asyncSelectors;
+	}
+
+	public CacheManager getCacheManager() {
+		return cacheManager;
+	}
+
+	public void setCacheManager(CacheManager cacheManager) {
+		this.cacheManager = cacheManager;
 	}
 }

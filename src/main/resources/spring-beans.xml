@@ -61,4 +61,6 @@
 		<property name="imagePathFactory" ref="imagePathFactory" />
 	</bean>
 
+	<bean id="cacheManager" name="cacheManager" class="com.acgsior.cache.CacheManager" />
+
 </beans>

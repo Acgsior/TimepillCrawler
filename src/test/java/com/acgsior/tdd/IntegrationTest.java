@@ -1,5 +1,6 @@
 package com.acgsior.tdd;
 
+import com.acgsior.cache.CacheManager;
 import com.acgsior.factory.URLFactory;
 import com.acgsior.selector.impl.person.PersonObjectSelector;
 import org.jsoup.Jsoup;
@@ -29,11 +30,16 @@ public class IntegrationTest {
     @Resource(name = "personSelector")
     private PersonObjectSelector personSelector;
 
+    @Resource(name = "cacheManager")
+    private CacheManager cacheManager;
+
     @Test
     public void peopleInfoSelectTest() throws IOException {
-        String personURL = tpURLFactory.getURL(URLFactory.PERSON, pidOfMine).get();
+        String personURL = tpURLFactory.getURL(URLFactory.PERSON, pidOfJane).get();
         Document document = Jsoup.connect(personURL).get();
 
-        personSelector.select(document, Optional.of(pidOfMine));
+        personSelector.select(document, Optional.of(pidOfJane));
+
+        cacheManager.logCacheStatus();
     }
 }

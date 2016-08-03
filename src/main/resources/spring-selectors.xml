@@ -35,6 +35,7 @@
 
 	<bean id="personSelector" name="personSelector" class="com.acgsior.selector.impl.person.PersonObjectSelector">
 		<property name="pattern" value="body" />
+		<property name="cacheManager" ref="cacheManager" />
 		<property name="syncSelectors">
 			<array>
 				<ref bean="personNameSelector" />
@@ -87,6 +88,7 @@
 	      class="com.acgsior.selector.impl.notebook.NotebookObjectSelector">
 		<property name="pattern" value=".notebooks .notebook" />
 		<property name="idSelector" ref="notebookIdSelector" />
+		<property name="cacheManager" ref="cacheManager" />
 		<property name="syncSelectors">
 			<array>
 				<ref bean="notebookNameSelector" />
@@ -138,6 +140,7 @@
 	<bean name="diarySelector" id="diarySelector" class="com.acgsior.selector.impl.diary.DiaryObjectSelector">
 		<property name="pattern" value="#diarys .diary" />
 		<property name="idSelector" ref="diaryIdSelector" />
+		<property name="cacheManager" ref="cacheManager" />
 		<property name="syncSelectors">
 			<array>
 				<ref bean="diaryContentSelector" />

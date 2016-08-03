@@ -29,7 +29,7 @@ public class DiaryObjectSelector extends ObjectSelector<List<Diary>> implements 
     private DateObjectSelector diaryDateSelector;
 
     @Override
-    public List<Diary> select(Document document, Optional parentId) {
+    public List<Diary> select(Document document, Optional<String> parentId) {
         Elements elements = document.select(getPattern());
         List<Diary> diaries = new ArrayList<>();
 
@@ -37,6 +37,7 @@ public class DiaryObjectSelector extends ObjectSelector<List<Diary>> implements 
 
         elements.forEach(element -> {
             Diary diary = Diary.newInstance(getIdSelector().select(element, parentId));
+            diary.setParent(parentId.get());
 
             Arrays.stream(getSyncSelectors()).forEach(selector -> {
                 Object value = selector.select(element, Optional.of(diary.getId()));
@@ -54,7 +55,10 @@ public class DiaryObjectSelector extends ObjectSelector<List<Diary>> implements 
 
     @Override
     public void cache(List<Diary> value) {
-        value.forEach(diary -> logger.info(diary.toString()));
+        value.forEach(diary -> {
+            // logger.info(diary.toString())
+            getCacheManager().cacheDiary(diary);
+        });
     }
 
     public void setDiaryDateSelector(DateObjectSelector diaryDateSelector) {

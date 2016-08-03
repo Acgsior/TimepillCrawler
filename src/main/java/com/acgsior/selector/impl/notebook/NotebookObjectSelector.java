@@ -5,6 +5,7 @@ import com.acgsior.factory.BeanFactory;
 import com.acgsior.model.Diary;
 import com.acgsior.model.Notebook;
 import com.acgsior.provider.DocumentProvider;
+import com.acgsior.provider.ExecutorProvider;
 import com.acgsior.selector.ICachedSelector;
 import com.acgsior.selector.ObjectSelector;
 import com.acgsior.selector.impl.diary.DiaryLinksSelector;
@@ -56,7 +57,8 @@ public class NotebookObjectSelector extends ObjectSelector<List<Notebook>> imple
                         .map(diaryLink -> DocumentProvider.fetch(diaryLink))
                         .filter(Optional::isPresent)
                         .map(diaryDocOptional -> CompletableFuture.supplyAsync(
-                                () -> diarySelector.select(diaryDocOptional.get(), notebook.getOptionalId())))
+                                () -> diarySelector.select(diaryDocOptional.get(), notebook.getOptionalId()),
+                                ExecutorProvider.getDiaryExecutor()))
                         .collect(Collectors.toList());
 
                 diarySelectFutures.forEach(CompletableFuture::join);
@@ -68,7 +70,10 @@ public class NotebookObjectSelector extends ObjectSelector<List<Notebook>> imple
 
     @Override
     public void cache(List<Notebook> value) {
-        value.forEach(notebook -> logger.info(notebook.toString()));
+        value.forEach(notebook -> {
+            // logger.info(notebook.toString();
+            getCacheManager().cacheNotebook(notebook);
+        });
     }
 
     public void setDiarySelector(DiaryObjectSelector diarySelector) {
