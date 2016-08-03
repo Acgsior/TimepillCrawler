@@ -30,6 +30,17 @@ public class Notebook extends Base {
         }
     }
 
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Notebook{");
+        sb.append("id='").append(getId()).append('\'');
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", begin=").append(begin);
+        sb.append(", end=").append(end);
+        sb.append('}');
+        return sb.toString();
+    }
+
     public boolean isNotebookExpired() {
         return end.compareTo(LocalDate.now()) <= 0;
     }

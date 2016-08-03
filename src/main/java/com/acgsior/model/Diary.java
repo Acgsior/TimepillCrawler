@@ -18,12 +18,22 @@ public class Diary extends Base {
 
     private String image;
 
-    private String nextMonthLocation;
-
     public static Diary newInstance(String diaryId) {
         Diary instance = new Diary();
         instance.setId(diaryId);
         return instance;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Diary{");
+        sb.append("id='").append(getId()).append('\'');
+        sb.append(", diaryDate=").append(diaryDate);
+        sb.append(", diaryTime=").append(diaryTime);
+        sb.append(", commentCount=").append(commentCount);
+        sb.append(", content='").append(content.replaceAll("\n", " ")).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 
     public String getContent() {
@@ -66,11 +76,4 @@ public class Diary extends Base {
         this.image = image;
     }
 
-    public String getNextMonthLocation() {
-        return nextMonthLocation;
-    }
-
-    public void setNextMonthLocation(String nextMonthLocation) {
-        this.nextMonthLocation = nextMonthLocation;
-    }
 }

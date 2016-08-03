@@ -1,5 +1,7 @@
 package com.acgsior.model;
 
+import java.util.Optional;
+
 /**
  * Created by Yove on 16/07/03.
  */
@@ -17,6 +19,10 @@ public abstract class Base {
 
     protected Base(String id) {
         this.id = id;
+    }
+
+    public Optional<String> getOptionalId() {
+        return Optional.of(id);
     }
 
     public String getId() {

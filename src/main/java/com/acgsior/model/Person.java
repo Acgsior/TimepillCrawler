@@ -20,6 +20,18 @@ public class Person extends Base {
         return instance;
     }
 
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Person{");
+        sb.append("id='").append(getId()).append('\'');
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", registerDate=").append(registerDate);
+        sb.append(", description='").append(description).append('\'');
+        sb.append(", avatar='").append(avatar).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
+
     public String getName() {
         return name;
     }
