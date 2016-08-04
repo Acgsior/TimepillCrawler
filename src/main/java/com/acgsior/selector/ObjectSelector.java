@@ -1,5 +1,6 @@
 package com.acgsior.selector;
 
+import com.acgsior.bootstrap.ICrawledDataCache;
 import com.acgsior.cache.CacheManager;
 import org.jsoup.nodes.Document;
 
@@ -8,17 +9,17 @@ import java.util.Optional;
 /**
  * Created by Yove on 16/07/01.
  */
-public abstract class ObjectSelector <T> extends AbstractSelector {
+public abstract class ObjectSelector<T> extends AbstractSelector {
 
     private AttributeObjectSelector idSelector;
 
-	private PropertySelector[] syncSelectors;
+    private PropertySelector[] syncSelectors;
 
-	private ObjectSelector[] asyncSelectors;
+    private ObjectSelector[] asyncSelectors;
 
-	private CacheManager cacheManager;
+    private CacheManager cacheManager;
 
-	public abstract T select(Document document, Optional<String> parentId);
+    public abstract T select(Document document, Optional<String> parentId);
 
     public AttributeObjectSelector getIdSelector() {
         return idSelector;
@@ -30,25 +31,25 @@ public abstract class ObjectSelector <T> extends AbstractSelector {
 
     public PropertySelector[] getSyncSelectors() {
         return syncSelectors;
-	}
+    }
 
-	public void setSyncSelectors(final PropertySelector[] syncSelectors) {
-		this.syncSelectors = syncSelectors;
-	}
+    public void setSyncSelectors(final PropertySelector[] syncSelectors) {
+        this.syncSelectors = syncSelectors;
+    }
 
-	public ObjectSelector[] getAsyncSelectors() {
-		return asyncSelectors;
-	}
+    public ObjectSelector[] getAsyncSelectors() {
+        return asyncSelectors;
+    }
 
-	public void setAsyncSelectors(final ObjectSelector[] asyncSelectors) {
-		this.asyncSelectors = asyncSelectors;
-	}
+    public void setAsyncSelectors(final ObjectSelector[] asyncSelectors) {
+        this.asyncSelectors = asyncSelectors;
+    }
 
-	public CacheManager getCacheManager() {
-		return cacheManager;
-	}
+    public ICrawledDataCache getCache() {
+        return cacheManager.getCache();
+    }
 
-	public void setCacheManager(CacheManager cacheManager) {
-		this.cacheManager = cacheManager;
-	}
+    public void setCacheManager(CacheManager cacheManager) {
+        this.cacheManager = cacheManager;
+    }
 }

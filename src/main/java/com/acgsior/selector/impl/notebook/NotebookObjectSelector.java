@@ -1,12 +1,12 @@
 package com.acgsior.selector.impl.notebook;
 
+import com.acgsior.bootstrap.ICachedSelector;
 import com.acgsior.bootstrap.IStandardizeURL;
 import com.acgsior.factory.BeanFactory;
 import com.acgsior.model.Diary;
 import com.acgsior.model.Notebook;
 import com.acgsior.provider.DocumentProvider;
 import com.acgsior.provider.ExecutorProvider;
-import com.acgsior.selector.ICachedSelector;
 import com.acgsior.selector.ObjectSelector;
 import com.acgsior.selector.impl.diary.DiaryLinksSelector;
 import com.acgsior.selector.impl.diary.DiaryObjectSelector;
@@ -71,7 +71,7 @@ public class NotebookObjectSelector extends ObjectSelector<List<Notebook>> imple
     @Override
     public void cache(List<Notebook> value) {
         value.forEach(notebook -> {
-            getCacheManager().cacheNotebook(notebook);
+            getCache().cacheNotebook(notebook);
         });
     }
 

@@ -1,8 +1,8 @@
 package com.acgsior.selector.impl.diary;
 
+import com.acgsior.bootstrap.ICachedSelector;
 import com.acgsior.factory.BeanFactory;
 import com.acgsior.model.Diary;
-import com.acgsior.selector.ICachedSelector;
 import com.acgsior.selector.ObjectSelector;
 import com.acgsior.selector.impl.DateObjectSelector;
 import org.jsoup.nodes.Document;
@@ -56,7 +56,7 @@ public class DiaryObjectSelector extends ObjectSelector<List<Diary>> implements 
     @Override
     public void cache(List<Diary> value) {
         value.forEach(diary -> {
-            getCacheManager().cacheDiary(diary);
+            getCache().cacheDiary(diary);
         });
     }
 

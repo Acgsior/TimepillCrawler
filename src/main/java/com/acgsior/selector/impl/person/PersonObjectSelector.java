@@ -1,8 +1,8 @@
 package com.acgsior.selector.impl.person;
 
+import com.acgsior.bootstrap.ICachedSelector;
 import com.acgsior.factory.BeanFactory;
 import com.acgsior.model.Person;
-import com.acgsior.selector.ICachedSelector;
 import com.acgsior.selector.ObjectSelector;
 import com.acgsior.selector.impl.notebook.NotebookObjectSelector;
 import org.jsoup.nodes.Document;
@@ -36,7 +36,7 @@ public class PersonObjectSelector extends ObjectSelector<Person> implements ICac
 
     @Override
     public void cache(Person value) {
-        getCacheManager().cachePerson(value);
+        getCache().cachePerson(value);
     }
 
     public void setNotebookSelector(NotebookObjectSelector notebookSelector) {
