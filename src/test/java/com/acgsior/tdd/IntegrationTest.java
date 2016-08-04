@@ -1,5 +1,6 @@
 package com.acgsior.tdd;
 
+import com.acgsior.bootstrap.ICrawledDataCacheLogger;
 import com.acgsior.cache.CacheManager;
 import com.acgsior.factory.URLFactory;
 import com.acgsior.selector.impl.person.PersonObjectSelector;
@@ -40,6 +41,6 @@ public class IntegrationTest {
 
         personSelector.select(document, Optional.of(pidOfJane));
 
-        cacheManager.logCacheStatus();
+        ((ICrawledDataCacheLogger) cacheManager.getCache()).logCacheStatus();
     }
 }
