@@ -13,7 +13,7 @@ import java.util.Optional;
  */
 public class TimeObjectSelector extends PropertySelector<LocalTime> {
 
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("h : m a", Locale.getDefault());
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("h : m a").withLocale(Locale.US);
 
     @Override
     public LocalTime select(final Element element, final Optional<String> parentId) {

@@ -2,8 +2,18 @@ package com.acgsior.tdd;
 
 import com.acgsior.bootstrap.ICleanFolder;
 import com.acgsior.bootstrap.ICreateFolder;
+import com.acgsior.docx.DiaryWriter;
 import com.acgsior.factory.DiaryDocumentPathFactory;
+import com.acgsior.factory.URLFactory;
+import com.acgsior.model.Diary;
+import com.acgsior.model.Notebook;
+import com.acgsior.selector.impl.diary.DiaryObjectSelector;
+import com.google.common.base.Splitter;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.*;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.*;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,10 +21,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -24,117 +40,80 @@ import java.util.Optional;
 @ContextConfiguration(locations = "classpath:spring-context.xml")
 public class POITest implements ICreateFolder, ICleanFolder {
 
-    @Resource(name = "diaryDocumentPathFactory")
-    private DiaryDocumentPathFactory diaryDocumentPathFactory;
+	private String notebookId = "95005";
+	private String diaryDate = "2010-08-04";
 
-    @Test
-    public void wordDocumentFolderTest() throws IOException {
-        Path dir = Paths.get(diaryDocumentPathFactory.getBasePath());
-        Path fwfDir = Paths.get(diaryDocumentPathFactory.getBasePath().concat("folder_with_file/"));
-        Path ffDir = Paths.get(diaryDocumentPathFactory.getBasePath().concat("folder_with_file/file.txt"));
-        Path fwofDir = Paths.get(diaryDocumentPathFactory.getBasePath().concat("folder_without_file/"));
-        Path fDir = Paths.get(diaryDocumentPathFactory.getBasePath().concat("file.txt"));
+	@Resource(name = "tpURLFactory")
+	private URLFactory tpURLFactory;
 
-        createFolder(fwfDir);
-        createFolder(fwofDir);
-        Files.createFile(ffDir, getMacFolderAttributes());
-        Files.createFile(fDir, getMacFolderAttributes());
+	@Resource(name = "diaryDocumentPathFactory")
+	private DiaryDocumentPathFactory diaryDocumentPathFactory;
 
-        diaryDocumentPathFactory.setCleanFoldFirst(true);
-        diaryDocumentPathFactory.cleanFolder(dir);
+	@Resource(name = "diarySelector")
+	private DiaryObjectSelector diarySelector;
 
-        Assert.assertEquals(Files.walk(dir).count(), 1);
-    }
+	@Resource(name = "diaryWriter")
+	private DiaryWriter diaryWriter;
 
-    @Test
-    public void wordDocumentGenerateTest() throws IOException {
-        XWPFDocument doc = new XWPFDocument();
+	@Test
+	public void wordDocumentFolderTest() throws IOException {
+		Path dir = Paths.get(diaryDocumentPathFactory.getBasePath());
+		Path fwfDir = Paths.get(diaryDocumentPathFactory.getBasePath().concat("folder_with_file/"));
+		Path ffDir = Paths.get(diaryDocumentPathFactory.getBasePath().concat("folder_with_file/file.txt"));
+		Path fwofDir = Paths.get(diaryDocumentPathFactory.getBasePath().concat("folder_without_file/"));
+		Path fDir = Paths.get(diaryDocumentPathFactory.getBasePath().concat("file.txt"));
 
-        XWPFParagraph p1 = doc.createParagraph();
-        p1.setAlignment(ParagraphAlignment.CENTER);
-        p1.setBorderBottom(Borders.DOUBLE);
-        p1.setBorderTop(Borders.DOUBLE);
+		createFolder(fwfDir);
+		createFolder(fwofDir);
+		Files.createFile(ffDir, getMacFolderAttributes());
+		Files.createFile(fDir, getMacFolderAttributes());
 
-        p1.setBorderRight(Borders.DOUBLE);
-        p1.setBorderLeft(Borders.DOUBLE);
-        p1.setBorderBetween(Borders.SINGLE);
+		diaryDocumentPathFactory.setCleanFoldFirst(true);
+		diaryDocumentPathFactory.cleanFolder(dir);
 
-        p1.setVerticalAlignment(TextAlignment.TOP);
+		Assert.assertEquals(Files.walk(dir).count(), 1);
+	}
 
-        XWPFRun r1 = p1.createRun();
-        r1.setBold(true);
-        r1.setText("The quick brown fox");
-        r1.setBold(true);
-        r1.setFontFamily("Courier");
-        r1.setUnderline(UnderlinePatterns.DOT_DOT_DASH);
-        r1.setTextPosition(100);
+	@Test
+	public void wordDocumentGenerateTest() throws IOException, InvalidFormatException {
+		Path dir = Paths.get(diaryDocumentPathFactory.getBasePath());
+		diaryDocumentPathFactory.setCleanFoldFirst(true);
+		diaryDocumentPathFactory.cleanFolder(dir);
+		diaryDocumentPathFactory.createDiaryDocumentFileFolder(Optional.of("testMan/"));
 
-        XWPFParagraph p2 = doc.createParagraph();
-        p2.setAlignment(ParagraphAlignment.RIGHT);
+		XWPFDocument doc = new XWPFDocument();
 
-        //BORDERS
-        p2.setBorderBottom(Borders.DOUBLE);
-        p2.setBorderTop(Borders.DOUBLE);
-        p2.setBorderRight(Borders.DOUBLE);
-        p2.setBorderLeft(Borders.DOUBLE);
-        p2.setBorderBetween(Borders.SINGLE);
+		XWPFParagraph p1 = doc.createParagraph();
 
-        XWPFRun r2 = p2.createRun();
-        r2.setText("jumped over the lazy dog");
-        r2.setStrike(true);
-        r2.setFontSize(20);
+		XWPFRun r1 = p1.createRun();
+		r1.setBold(true);
+		r1.setText("Excelsior†");
+		r1.setFontSize(20);
 
-        XWPFRun r3 = p2.createRun();
-        r3.setText("and went away");
-        r3.setStrike(true);
-        r3.setFontSize(20);
-        r3.setSubscript(VerticalAlign.SUPERSCRIPT);
+		XWPFParagraph p2 = doc.createParagraph();
+		XWPFRun r2 = p2.createRun();
+		FileInputStream avatar = new FileInputStream("/Users/Yove/Downloads/101237285739d4fc74.jpg");
+		BufferedImage bi = ImageIO.read(avatar);
+		r2.addPicture(avatar, XWPFDocument.PICTURE_TYPE_JPEG, "Avatar", bi.getWidth(), bi.getHeight());
+		avatar.close();
 
+		XWPFParagraph p3 = doc.createParagraph();
+		XWPFRun r3 = p3.createRun();
+		r3.setText("2012-04-05 加入");
+		r3.setCapitalized(true);
+		r3.setBold(true);
 
-        XWPFParagraph p3 = doc.createParagraph();
-        p3.setWordWrap(true);
-        p3.setPageBreak(true);
+		String dateNotebookURL = tpURLFactory.getURL(URLFactory.DATE_NOTEBOOK, notebookId, diaryDate).get();
+		Optional optionalPid = Optional.of(notebookId);
+		org.jsoup.nodes.Document document = Jsoup.connect(dateNotebookURL).get();
+		List<Diary> dairies = diarySelector.select(document, optionalPid);
 
-        //p3.setAlignment(ParagraphAlignment.DISTRIBUTE);
-        p3.setAlignment(ParagraphAlignment.BOTH);
-        p3.setSpacingLineRule(LineSpacingRule.EXACT);
+		Notebook mockNotebook = Notebook.newInstance(notebookId);
+		mockNotebook.setName("- Closed Note -");
 
-        p3.setIndentationFirstLine(600);
+		dairies.forEach(diary -> diaryWriter.output(doc, diary, mockNotebook));
 
-
-        XWPFRun r4 = p3.createRun();
-        r4.setTextPosition(20);
-        r4.setText("To be, or not to be: that is the question: "
-                + "Whether 'tis nobler in the mind to suffer "
-                + "The slings and arrows of outrageous fortune, "
-                + "Or to take arms against a sea of troubles, "
-                + "And by opposing end them? To die: to sleep; ");
-        r4.addBreak(BreakType.PAGE);
-        r4.setText("No more; and by a sleep to say we end "
-                + "The heart-ache and the thousand natural shocks "
-                + "That flesh is heir to, 'tis a consummation "
-                + "Devoutly to be wish'd. To die, to sleep; "
-                + "To sleep: perchance to dream: ay, there's the rub; "
-                + ".......");
-        r4.setItalic(true);
-        //This would imply that this break shall be treated as a simple line break, and break the line after that word:
-
-        XWPFRun r5 = p3.createRun();
-        r5.setTextPosition(-10);
-        r5.setText("For in that sleep of death what dreams may come");
-        r5.addCarriageReturn();
-        r5.setText("When we have shuffled off this mortal coil,"
-                + "Must give us pause: there's the respect"
-                + "That makes calamity of so long life;");
-        r5.addBreak();
-        r5.setText("For who would bear the whips and scorns of time,"
-                + "The oppressor's wrong, the proud man's contumely,");
-
-        r5.addBreak(BreakClear.ALL);
-        r5.setText("The pangs of despised love, the law's delay,"
-                + "The insolence of office and the spurns" + ".......");
-
-        diaryDocumentPathFactory.createDiaryDocument(doc, Optional.of("testMan"), Optional.of("testMan"));
-    }
+		diaryDocumentPathFactory.createDiaryDocument(doc, Optional.of("testMan"), Optional.of("testMan"));
+	}
 
 }

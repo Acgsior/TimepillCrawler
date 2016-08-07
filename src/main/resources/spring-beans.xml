@@ -40,18 +40,17 @@
 	<bean id="imagePathFactory" name="imagePathFactory" class="com.acgsior.factory.ImagePathFactory">
 		<constructor-arg name="imageTypeBasePathMap">
 			<map>
-				`
-				<entry value="/Users/mqin/Temp/timepill/avatar/">
+				<entry value="/Users/Yove/Temp/timepill/avatar/">
 					<key>
 						<util:constant static-field="com.acgsior.image.ImageType.AVATAR" />
 					</key>
 				</entry>
-				<entry value="/Users/mqin/Temp/timepill/cover/">
+				<entry value="/Users/Yove/Temp/timepill/cover/">
 					<key>
 						<util:constant static-field="com.acgsior.image.ImageType.COVER" />
 					</key>
 				</entry>
-				<entry value="/Users/mqin/Temp/timepill/image/">
+				<entry value="/Users/Yove/Temp/timepill/image/">
 					<key>
 						<util:constant static-field="com.acgsior.image.ImageType.IMAGE" />
 					</key>
@@ -63,7 +62,7 @@
 	<bean id="diaryDocumentPathFactory" name="diaryDocumentPathFactory"
 	      class="com.acgsior.factory.DiaryDocumentPathFactory">
 		<constructor-arg name="cleanFoldFirst" value="false" />
-		<constructor-arg name="basePath" value="/Users/mqin/Temp/timepill/result/" />
+		<constructor-arg name="basePath" value="/Users/Yove/Temp/timepill/result/" />
 	</bean>
 
 	<bean id="imageSyncDownloader" name="imageSyncDownloader" class="com.acgsior.image.ImageSyncDownloader">
@@ -78,4 +77,5 @@
 	<bean id="notebookBasedCache" name="notebookBasedCache" class="com.acgsior.cache.NotebookBasedCache" />
 	<bean id="datetimeBasedCache" name="datetimeBasedCache" class="com.acgsior.cache.DatetimeBasedCache" />
 
+	<bean id="diaryWriter" name="diaryWriter" class="com.acgsior.docx.DiaryWriter" />
 </beans>

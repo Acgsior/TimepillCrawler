@@ -19,51 +19,52 @@ import java.util.Optional;
  */
 public class DiaryDocumentPathFactory implements ICreateFolder, ICleanFolder {
 
-    private boolean cleanFoldFirst;
+	private boolean cleanFoldFirst;
 
-    private String basePath;
+	private String basePath;
 
-    public DiaryDocumentPathFactory(String basePath, boolean cleanFoldFirst) {
-        this.basePath = basePath;
-        this.cleanFoldFirst = cleanFoldFirst;
-        createDiaryDocumentFileFolder(Optional.empty());
-    }
+	public DiaryDocumentPathFactory(String basePath, boolean cleanFoldFirst) {
+		this.basePath = basePath;
+		this.cleanFoldFirst = cleanFoldFirst;
+		createDiaryDocumentFileFolder(Optional.empty());
+		if (cleanFoldFirst) {
+			try {
+				cleanFolder(Paths.get(basePath));
+			} catch (IOException e) {
+				String msg = String.format("Clean diary document file directory failed for path: %s", basePath);
+				throw new CrawlerInitialException(msg, e);
+			}
+		}
+	}
 
-    public void createDiaryDocumentFileFolder(Optional<String> personName) {
-        Path dir = Paths.get(basePath.concat(personName.orElse("")));
-        if (Files.notExists(dir, LinkOption.NOFOLLOW_LINKS)) {
-            createFolder(dir);
-        }
-        if (cleanFoldFirst) {
-            try {
-                cleanFolder(dir);
-            } catch (IOException e) {
-                String msg = String.format("Clean diary document file directory failed for path: %s", dir);
-                throw new CrawlerInitialException(msg);
-            }
-        }
-    }
+	public void createDiaryDocumentFileFolder(Optional<String> personName) {
+		Path dir = Paths.get(basePath.concat(personName.orElse("")));
 
-    public void createDiaryDocument(XWPFDocument doc, Optional<String> personName, Optional<String> documentName) throws IOException {
-        createDiaryDocumentFileFolder(personName);
+		if (Files.notExists(dir, LinkOption.NOFOLLOW_LINKS)) {
+			createFolder(dir);
+		}
+	}
 
-        String fileDir = basePath.concat(personName.orElse("")).concat("/").concat(documentName.orElse("untitled")).concat(".docx");
-        Files.createFile(Paths.get(fileDir), getMacFolderAttributes());
+	public void createDiaryDocument(XWPFDocument doc, Optional<String> personName, Optional<String> documentName) throws IOException {
+		createDiaryDocumentFileFolder(personName);
 
-        OutputStream out = new FileOutputStream(fileDir);
-        doc.write(out);
-        out.close();
-    }
+		String fileDir = basePath.concat(personName.orElse("")).concat("/").concat(documentName.orElse("untitled")).concat(".docx");
+		Files.createFile(Paths.get(fileDir), getMacFolderAttributes());
 
-    public void setCleanFoldFirst(boolean cleanFoldFirst) {
-        this.cleanFoldFirst = cleanFoldFirst;
-    }
+		OutputStream out = new FileOutputStream(fileDir);
+		doc.write(out);
+		out.close();
+	}
 
-    public String getBasePath() {
-        return basePath;
-    }
+	public void setCleanFoldFirst(boolean cleanFoldFirst) {
+		this.cleanFoldFirst = cleanFoldFirst;
+	}
 
-    public void setBasePath(String basePath) {
-        this.basePath = basePath;
-    }
+	public String getBasePath() {
+		return basePath;
+	}
+
+	public void setBasePath(String basePath) {
+		this.basePath = basePath;
+	}
 }

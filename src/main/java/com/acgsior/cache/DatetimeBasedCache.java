@@ -2,7 +2,7 @@ package com.acgsior.cache;
 
 import com.acgsior.bootstrap.ICrawledDataCache;
 import com.acgsior.bootstrap.ICrawledDataCacheLogger;
-import com.acgsior.bootstrap.ILocalDateTimeToStringConvertor;
+import com.acgsior.bootstrap.ILocalDateTimeToStringConverter;
 import com.acgsior.model.Diary;
 import com.acgsior.model.Notebook;
 import com.acgsior.model.Person;
@@ -15,7 +15,7 @@ import java.util.TreeMap;
 /**
  * Created by mqin on 8/4/16.
  */
-public class DatetimeBasedCache implements ICrawledDataCache, ICrawledDataCacheLogger, ILocalDateTimeToStringConvertor {
+public class DatetimeBasedCache implements ICrawledDataCache, ICrawledDataCacheLogger, ILocalDateTimeToStringConverter {
 
     private static Logger logger = LoggerFactory.getLogger(NotebookBasedCache.class);
 
