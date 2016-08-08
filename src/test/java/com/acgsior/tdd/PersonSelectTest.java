@@ -27,8 +27,8 @@ public class PersonSelectTest {
 
     private String personId = "100079421";
 
-    @Resource(name = "tpURLFactory")
-    private URLFactory tpURLFactory;
+    @Resource(name = "URLFactory")
+    private URLFactory URLFactory;
 
     @Resource(name = "personNameSelector")
     private PropertySelector<String> personNameSelector;
@@ -47,7 +47,7 @@ public class PersonSelectTest {
 
     @Test
     public void peopleInfoSelectTest() throws IOException {
-        String personURL = tpURLFactory.getURL(URLFactory.PERSON, personId).get();
+        String personURL = URLFactory.getURL(URLFactory.PERSON, personId).get();
         Assert.assertEquals("http://timepill.net/people/100079421", personURL);
 
         Document document = Jsoup.connect(personURL).get();

@@ -36,8 +36,8 @@ public class DiarySelectTest {
     private String notebookId = "95005";
     private String diaryDate = "2010-08-04";
 
-    @Resource(name = "tpURLFactory")
-    private URLFactory tpURLFactory;
+    @Resource(name = "URLFactory")
+    private URLFactory URLFactory;
 
     @Resource(name = "diaryDateSelector")
     private DateObjectSelector diaryDateSelector;
@@ -59,7 +59,7 @@ public class DiarySelectTest {
 
     @Test
     public void diarySelectTest() throws IOException {
-        String dateNotebookURL = tpURLFactory.getURL(URLFactory.DATE_NOTEBOOK, notebookId, diaryDate).get();
+        String dateNotebookURL = URLFactory.getURL(URLFactory.DATE_NOTEBOOK, notebookId, diaryDate).get();
         Optional optionalPid = Optional.of(notebookId);
         Assert.assertEquals("http://timepill.net/notebook/95005/2010-08-04", dateNotebookURL);
 

@@ -77,4 +77,16 @@ public class DatetimeBasedCache implements ICrawledDataCache, ICrawledDataCacheL
     public int getCacheDiaryCount() {
         return diaryCache.size();
     }
+
+    public Person getPersonCache() {
+        return personCache;
+    }
+
+    public TreeMap<String, Notebook> getNotebookCache() {
+        return notebookCache;
+    }
+
+    public TreeMap<String, Diary> getDiaryCache() {
+        return diaryCache;
+    }
 }

@@ -5,6 +5,8 @@ import com.acgsior.bootstrap.ICreateFolder;
 import com.acgsior.docx.DiaryDocumentWriter;
 import com.acgsior.factory.DiaryDocumentPathFactory;
 import com.acgsior.factory.URLFactory;
+import com.acgsior.model.Diary;
+import com.acgsior.model.Notebook;
 import com.acgsior.selector.impl.diary.DiaryObjectSelector;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
@@ -12,6 +14,7 @@ import org.apache.poi.xwpf.usermodel.BreakType;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.jsoup.Jsoup;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,12 +22,15 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -37,8 +43,8 @@ public class POITest implements ICreateFolder, ICleanFolder {
     private String notebookId = "95005";
     private String diaryDate = "2010-08-04";
 
-    @Resource(name = "tpURLFactory")
-    private URLFactory tpURLFactory;
+    @Resource(name = "URLFactory")
+    private URLFactory URLFactory;
 
     @Resource(name = "diaryDocumentPathFactory")
     private DiaryDocumentPathFactory diaryDocumentPathFactory;
@@ -124,19 +130,19 @@ public class POITest implements ICreateFolder, ICleanFolder {
 
         XWPFParagraph p2 = doc.createParagraph();
         XWPFRun r2 = p2.createRun();
-        String image = "/Users/mqin/topit_me/112000607109b9ce07o.jpg";
+        String image = "/Users/Yove/Temp/timepill/avatar/100079421.jpg";
 //		FileInputStream avatar = new FileInputStream("/Users/Yove/Downloads/101237285739d4fc74.jpg");
         FileInputStream avatar = new FileInputStream(image);
         int imageFormat = getImageFormat(image);
-//        BufferedImage bi = ImageIO.read(avatar);
-//        r2.setText("/Users/mqin/topit_me/112000607109b9ce07o.jpg");
-//        r2.addBreak();
-//        r2.addPicture(avatar, imageFormat, "/Users/mqin/topit_me/112000607109b9ce07o.jpg", bi.getWidth(), bi.getHeight());
-        r2.addPicture(avatar, imageFormat, image, Units.toEMU(200), Units.toEMU(200));
+        BufferedImage bi = ImageIO.read(avatar);
+        int width = bi.getWidth();
+        int height = bi.getHeight();
+        avatar = new FileInputStream(image);
+        r2.addPicture(avatar, imageFormat, image, Units.toEMU(width), Units.toEMU(height));
         r2.addBreak();
-//        r2.addPicture(avatar, imageFormat, image, bi.getWidth(), bi.getHeight());
+        //r2.addPicture(avatar, imageFormat, image, Units.toEMU(bi.getWidth()), Units.toEMU(bi.getHeight()));
         r2.addBreak(BreakType.PAGE);
-//        avatar.close();
+        avatar.close();
 
         XWPFParagraph p3 = doc.createParagraph();
         XWPFRun r3 = p3.createRun();
@@ -146,23 +152,15 @@ public class POITest implements ICreateFolder, ICleanFolder {
         r3.addBreak();
         p3.setPageBreak(true);
 
-        XWPFParagraph p4 = doc.createParagraph();
-        XWPFRun r4 = p4.createRun();
-        r4.setText("2012-04-05 加入");
-        r4.setCapitalized(true);
-        r4.setBold(true);
-        r4.addBreak();
-        p4.setPageBreak(true);
+		String dateNotebookURL = URLFactory.getURL(URLFactory.DATE_NOTEBOOK, notebookId, diaryDate).get();
+		Optional optionalPid = Optional.of(notebookId);
+		org.jsoup.nodes.Document document = Jsoup.connect(dateNotebookURL).get();
+		List<Diary> dairies = diarySelector.select(document, optionalPid);
 
-//		String dateNotebookURL = tpURLFactory.getURL(URLFactory.DATE_NOTEBOOK, notebookId, diaryDate).get();
-//		Optional optionalPid = Optional.of(notebookId);
-//		org.jsoup.nodes.Document document = Jsoup.connect(dateNotebookURL).get();
-//		List<Diary> dairies = diarySelector.select(document, optionalPid);
-//
-//		Notebook mockNotebook = Notebook.newInstance(notebookId);
-//		mockNotebook.setName("- Closed Note -");
-//
-//		dairies.forEach(diary -> diaryWriter.output(doc, diary, mockNotebook));
+		Notebook mockNotebook = Notebook.newInstance(notebookId);
+		mockNotebook.setName("- Closed Note -");
+
+		dairies.forEach(diary -> diaryWriter.output(doc, diary));
 
         diaryDocumentPathFactory.createDiaryDocument(doc, Optional.of("testMan"), Optional.of("testMan"));
     }

@@ -6,89 +6,96 @@
        http://www.springframework.org/schema/util
        http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 
-	<bean id="applicationContextProvider" class="com.acgsior.provider.ApplicationContextProvider" />
+    <bean id="applicationContextProvider" class="com.acgsior.provider.ApplicationContextProvider" />
 
-	<!-- === FACTORIES ===  -->
+    <!-- === FACTORIES ===  -->
 
-	<bean id="tpURLFactory" name="tpURLFactory" class="com.acgsior.factory.URLFactory">
-		<constructor-arg name="URLMap">
-			<map>
-				<entry value="http://timepill.net/people/{0}">
-					<key>
-						<util:constant static-field="com.acgsior.factory.URLFactory.PERSON" />
-					</key>
-				</entry>
-				<entry value="http://timepill.net/notebook/{0}">
-					<key>
-						<util:constant static-field="com.acgsior.factory.URLFactory.NOTEBOOK" />
-					</key>
-				</entry>
-				<entry value="http://timepill.net/notebook/{0}/{1}">
-					<key>
-						<util:constant static-field="com.acgsior.factory.URLFactory.DATE_NOTEBOOK" />
-					</key>
-				</entry>
-				<entry value="http://timepill.net/diary/{0}">
-					<key>
-						<util:constant static-field="com.acgsior.factory.URLFactory.DIARY" />
-					</key>
-				</entry>
-			</map>
-		</constructor-arg>
-	</bean>
+    <bean id="URLFactory" name="URLFactory" class="com.acgsior.factory.URLFactory">
+        <constructor-arg name="URLMap">
+            <map>
+                <entry value="http://timepill.net/people/{0}">
+                    <key>
+                        <util:constant static-field="com.acgsior.factory.URLFactory.PERSON" />
+                    </key>
+                </entry>
+                <entry value="http://timepill.net/notebook/{0}">
+                    <key>
+                        <util:constant static-field="com.acgsior.factory.URLFactory.NOTEBOOK" />
+                    </key>
+                </entry>
+                <entry value="http://timepill.net/notebook/{0}/{1}">
+                    <key>
+                        <util:constant static-field="com.acgsior.factory.URLFactory.DATE_NOTEBOOK" />
+                    </key>
+                </entry>
+                <entry value="http://timepill.net/diary/{0}">
+                    <key>
+                        <util:constant static-field="com.acgsior.factory.URLFactory.DIARY" />
+                    </key>
+                </entry>
+            </map>
+        </constructor-arg>
+    </bean>
 
-	<bean id="imagePathFactory" name="imagePathFactory" class="com.acgsior.factory.ImagePathFactory">
-		<constructor-arg name="imageTypeBasePathMap">
-			<map>
-				<entry value="/Users/mqin/Temp/timepill/avatar/">
-					<key>
-						<util:constant static-field="com.acgsior.image.ImageType.AVATAR" />
-					</key>
-				</entry>
-				<entry value="/Users/mqin/Temp/timepill/cover/">
-					<key>
-						<util:constant static-field="com.acgsior.image.ImageType.COVER" />
-					</key>
-				</entry>
-				<entry value="/Users/mqin/Temp/timepill/image/">
-					<key>
-						<util:constant static-field="com.acgsior.image.ImageType.IMAGE" />
-					</key>
-				</entry>
-			</map>
-		</constructor-arg>
-	</bean>
+    <bean id="imagePathFactory" name="imagePathFactory" class="com.acgsior.factory.ImagePathFactory">
+        <constructor-arg name="imageTypeBasePathMap">
+            <map>
+                <entry value="/Users/Yove/Temp/timepill/avatar/">
+                    <key>
+                        <util:constant static-field="com.acgsior.image.ImageType.AVATAR" />
+                    </key>
+                </entry>
+                <entry value="/Users/Yove/Temp/timepill/cover/">
+                    <key>
+                        <util:constant static-field="com.acgsior.image.ImageType.COVER" />
+                    </key>
+                </entry>
+                <entry value="/Users/Yove/Temp/timepill/image/">
+                    <key>
+                        <util:constant static-field="com.acgsior.image.ImageType.IMAGE" />
+                    </key>
+                </entry>
+            </map>
+        </constructor-arg>
+    </bean>
 
-	<bean id="diaryDocumentPathFactory" name="diaryDocumentPathFactory"
-	      class="com.acgsior.factory.DiaryDocumentPathFactory">
-		<constructor-arg name="cleanFoldFirst" value="false" />
-		<constructor-arg name="basePath" value="/Users/mqin/Temp/timepill/result/" />
-	</bean>
+    <bean id="diaryDocumentPathFactory" name="diaryDocumentPathFactory"
+          class="com.acgsior.factory.DiaryDocumentPathFactory">
+        <constructor-arg name="cleanFoldFirst" value="false" />
+        <constructor-arg name="basePath" value="/Users/Yove/Temp/timepill/result/" />
+    </bean>
 
-	<bean id="imageSyncDownloader" name="imageSyncDownloader" class="com.acgsior.image.ImageSyncDownloader">
-		<property name="imagePathFactory" ref="imagePathFactory" />
-	</bean>
+    <bean id="imageSyncDownloader" name="imageSyncDownloader" class="com.acgsior.image.ImageSyncDownloader">
+        <property name="imagePathFactory" ref="imagePathFactory" />
+    </bean>
 
-	<!-- === CACHE ===  -->
+    <!-- === CACHE ===  -->
 
-	<bean id="cacheManager" name="cacheManager" class="com.acgsior.cache.CacheManager">
-		<property name="notebookBasedCache" ref="notebookBasedCache" />
-		<property name="datetimeBasedCache" ref="datetimeBasedCache" />
-		<property name="cacheType" value="DATETIME_BASED" />
-	</bean>
-	<bean id="notebookBasedCache" name="notebookBasedCache" class="com.acgsior.cache.NotebookBasedCache" />
-	<bean id="datetimeBasedCache" name="datetimeBasedCache" class="com.acgsior.cache.DatetimeBasedCache" />
+    <bean id="cacheManager" name="cacheManager" class="com.acgsior.cache.CacheManager">
+        <property name="notebookBasedCache" ref="notebookBasedCache" />
+        <property name="datetimeBasedCache" ref="datetimeBasedCache" />
+        <property name="cacheType" value="DATETIME_BASED" />
+    </bean>
+    <bean id="notebookBasedCache" name="notebookBasedCache" class="com.acgsior.cache.NotebookBasedCache" />
+    <bean id="datetimeBasedCache" name="datetimeBasedCache" class="com.acgsior.cache.DatetimeBasedCache" />
 
-	<!-- === DOCUMENT WRITER ===  -->
+    <!-- === DOCUMENT WRITER ===  -->
 
-	<bean id="personWriter" name="personWriter" class="com.acgsior.docx.PersonDocumentWriter" />
-	<bean id="notebooksWriter" name="notebooksWriter" class="com.acgsior.docx.NotebooksDocumentWriter">
-		<property name="notebookDocumentWriter" ref="notebookWriter" />
-	</bean>
-	<bean id="notebookWriter" name="notebookWriter" class="com.acgsior.docx.NotebookDocumentWriter" />
-	<bean id="dateTimeBasedDiariesWriter" name="dateTimeBasedDiariesWriter"
-	      class="com.acgsior.docx.DateTimeBasedDiariesDocumentWriter">
-		<property name="diaryDocumentWriter" ref="diaryWriter" />
-	</bean>
-	<bean id="diaryWriter" name="diaryWriter" class="com.acgsior.docx.DiaryDocumentWriter" />
+    <bean id="documentWriterManager" name="documentWriterManager" class="com.acgsior.docx.DocumentWriterManager">
+        <property name="cacheManager" ref="cacheManager" />
+        <property name="personDocumentWriter" ref="personWriter" />
+        <property name="notebooksDocumentWriter" ref="notebooksWriter" />
+        <property name="dateTimeBasedDiariesDocumentWriter" ref="dateTimeBasedDiariesWriter" />
+    </bean>
+
+    <bean id="personWriter" name="personWriter" class="com.acgsior.docx.PersonDocumentWriter" />
+    <bean id="notebooksWriter" name="notebooksWriter" class="com.acgsior.docx.NotebooksDocumentWriter">
+        <property name="notebookDocumentWriter" ref="notebookWriter" />
+    </bean>
+    <bean id="notebookWriter" name="notebookWriter" class="com.acgsior.docx.NotebookDocumentWriter" />
+    <bean id="dateTimeBasedDiariesWriter" name="dateTimeBasedDiariesWriter"
+          class="com.acgsior.docx.DateTimeBasedDiariesDocumentWriter">
+        <property name="diaryDocumentWriter" ref="diaryWriter" />
+    </bean>
+    <bean id="diaryWriter" name="diaryWriter" class="com.acgsior.docx.DiaryDocumentWriter" />
 </beans>

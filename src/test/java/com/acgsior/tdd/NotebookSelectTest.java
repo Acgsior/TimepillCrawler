@@ -33,8 +33,8 @@ public class NotebookSelectTest {
     private String personId = "100079421";
     private String notebookId = "95005";
 
-    @Resource(name = "tpURLFactory")
-    private URLFactory tpURLFactory;
+    @Resource(name = "URLFactory")
+    private URLFactory URLFactory;
 
     @Resource(name = "notebookSelector")
     private NotebookObjectSelector notebookSelector;
@@ -53,7 +53,7 @@ public class NotebookSelectTest {
 
     @Test
     public void notebooksSelectTest() throws IOException {
-        String personURL = tpURLFactory.getURL(URLFactory.PERSON, personId).get();
+        String personURL = URLFactory.getURL(URLFactory.PERSON, personId).get();
         Optional optionalPid = Optional.of(personId);
 
         Document document = Jsoup.connect(personURL).get();
@@ -83,7 +83,7 @@ public class NotebookSelectTest {
 
     @Test
     public void diaryLinksSelectTest() throws IOException {
-        String personURL = tpURLFactory.getURL(URLFactory.NOTEBOOK, notebookId).get();
+        String personURL = URLFactory.getURL(URLFactory.NOTEBOOK, notebookId).get();
         Optional optionalPid = Optional.of(notebookId);
 
         Document document = Jsoup.connect(personURL).get();

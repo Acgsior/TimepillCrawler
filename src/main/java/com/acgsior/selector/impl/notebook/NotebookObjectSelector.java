@@ -48,7 +48,7 @@ public class NotebookObjectSelector extends ObjectSelector<List<Notebook>> imple
 
         cache(notebooks);
 
-        notebooks.parallelStream().filter(notebook -> !notebook.isNotebookExpired())
+        notebooks.parallelStream().filter(notebook -> notebook.isNotebookExpired())
                 .forEach(notebook -> {
                     Optional<Document> notebookDocOptional = DocumentProvider.fetch(standardizeURL(notebook.getLocation()));
                     if (notebookDocOptional.isPresent()) {

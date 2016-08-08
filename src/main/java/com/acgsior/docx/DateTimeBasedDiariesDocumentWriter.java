@@ -3,10 +3,13 @@ package com.acgsior.docx;
 import com.acgsior.model.Diary;
 import com.google.common.base.Splitter;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -15,44 +18,53 @@ import java.util.TreeMap;
  */
 public class DateTimeBasedDiariesDocumentWriter implements IDocumentWriter<TreeMap<String, Diary>> {
 
-    private DiaryDocumentWriter diaryDocumentWriter;
+	private DiaryDocumentWriter diaryDocumentWriter;
 
-    @Override
-    public void output(XWPFDocument document, TreeMap<String, Diary> diaryMap) {
-        String year = "2000"; // timepill had not been created yet
+	@Override
+	public void output(XWPFDocument document, TreeMap<String, Diary> diaryMap) {
+		String year = ""; // timepill had not been created yet
 
-        Iterator<Map.Entry<String, Diary>> it = diaryMap.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry<String, Diary> entry = it.next();
+		Iterator<Map.Entry<String, Diary>> it = diaryMap.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<String, Diary> entry = it.next();
 
-            String yearOfKey = getYearOfDateKey(entry.getKey());
-            if (!compareYearOfDateKey(year, yearOfKey)) {
-                year = yearOfKey;
+			String yearOfKey = getYearOfDateKey(entry.getKey());
+			if (!compareYearOfDateKey(year, yearOfKey)) {
 
-                XWPFRun yearLine = document.createParagraph().createRun();
-                yearLine.setText(year);
-                yearLine.setFontSize(16);
-                yearLine.setBold(true);
-                yearLine.addCarriageReturn();
+				year = yearOfKey;
 
-                diaryDocumentWriter.output(document, entry.getValue());
-            }
-        }
-    }
+				XWPFParagraph paragraph = document.createParagraph();
+				paragraph.setAlignment(ParagraphAlignment.LEFT);
+				paragraph.setPageBreak(true);
 
-    protected boolean compareYearOfDateKey(String year, String yearOfKey) {
-        return StringUtils.equals(year, yearOfKey);
-    }
+				XWPFRun yearLine = paragraph.createRun();
+				yearLine.setText(makeYearLine(year));
+				yearLine.setFontSize(20);
+				yearLine.setBold(true);
+				yearLine.addCarriageReturn();
+			}
 
-    protected String getYearOfDateKey(String key) {
-        return Splitter.on('-').omitEmptyStrings().limit(1).splitToList(key).get(0);
-    }
+			diaryDocumentWriter.output(document, entry.getValue());
+		}
+	}
 
-    public DiaryDocumentWriter getDiaryDocumentWriter() {
-        return diaryDocumentWriter;
-    }
+	protected String makeYearLine(final String year) {
+		return new StringBuilder().append(" - ").append(year).append(" - ").toString();
+	}
 
-    public void setDiaryDocumentWriter(DiaryDocumentWriter diaryDocumentWriter) {
-        this.diaryDocumentWriter = diaryDocumentWriter;
-    }
+	protected boolean compareYearOfDateKey(String year, String yearOfKey) {
+		return StringUtils.equals(year, yearOfKey);
+	}
+
+	protected String getYearOfDateKey(String key) {
+		return Splitter.on('-').omitEmptyStrings().splitToList(key).get(0);
+	}
+
+	public DiaryDocumentWriter getDiaryDocumentWriter() {
+		return diaryDocumentWriter;
+	}
+
+	public void setDiaryDocumentWriter(DiaryDocumentWriter diaryDocumentWriter) {
+		this.diaryDocumentWriter = diaryDocumentWriter;
+	}
 }

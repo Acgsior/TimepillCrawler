@@ -14,9 +14,8 @@ public class NotebooksDocumentWriter implements IDocumentWriter<Map<String, Note
 
     @Override
     public void output(XWPFDocument document, Map<String, Notebook> notebookMap) {
-        notebookMap.forEach((key, value) -> notebookDocumentWriter.output(document, value));
-
         document.createParagraph().setPageBreak(true);
+        notebookMap.forEach((key, value) -> notebookDocumentWriter.output(document, value));
     }
 
     public NotebookDocumentWriter getNotebookDocumentWriter() {
