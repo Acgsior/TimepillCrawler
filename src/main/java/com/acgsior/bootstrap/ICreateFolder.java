@@ -29,7 +29,7 @@ public interface ICreateFolder {
     }
 
     default FileAttribute<Set<PosixFilePermission>> getMacFolderAttributes() {
-        Set<PosixFilePermission> perms = PosixFilePermissions.fromString("rwxrwxrwx");
+        Set<PosixFilePermission> perms = PosixFilePermissions.fromString("rwxr-xr-x");
         return PosixFilePermissions.asFileAttribute(perms);
     }
 }

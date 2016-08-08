@@ -2,18 +2,16 @@ package com.acgsior.tdd;
 
 import com.acgsior.bootstrap.ICleanFolder;
 import com.acgsior.bootstrap.ICreateFolder;
-import com.acgsior.docx.DiaryWriter;
+import com.acgsior.docx.DiaryDocumentWriter;
 import com.acgsior.factory.DiaryDocumentPathFactory;
 import com.acgsior.factory.URLFactory;
-import com.acgsior.model.Diary;
-import com.acgsior.model.Notebook;
 import com.acgsior.selector.impl.diary.DiaryObjectSelector;
-import com.google.common.base.Splitter;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
-import org.apache.poi.xwpf.usermodel.*;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.*;
+import org.apache.poi.xwpf.usermodel.BreakType;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,16 +19,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -40,80 +34,153 @@ import java.util.Optional;
 @ContextConfiguration(locations = "classpath:spring-context.xml")
 public class POITest implements ICreateFolder, ICleanFolder {
 
-	private String notebookId = "95005";
-	private String diaryDate = "2010-08-04";
+    private String notebookId = "95005";
+    private String diaryDate = "2010-08-04";
 
-	@Resource(name = "tpURLFactory")
-	private URLFactory tpURLFactory;
+    @Resource(name = "tpURLFactory")
+    private URLFactory tpURLFactory;
 
-	@Resource(name = "diaryDocumentPathFactory")
-	private DiaryDocumentPathFactory diaryDocumentPathFactory;
+    @Resource(name = "diaryDocumentPathFactory")
+    private DiaryDocumentPathFactory diaryDocumentPathFactory;
 
-	@Resource(name = "diarySelector")
-	private DiaryObjectSelector diarySelector;
+    @Resource(name = "diarySelector")
+    private DiaryObjectSelector diarySelector;
 
-	@Resource(name = "diaryWriter")
-	private DiaryWriter diaryWriter;
+    @Resource(name = "diaryWriter")
+    private DiaryDocumentWriter diaryWriter;
 
-	@Test
-	public void wordDocumentFolderTest() throws IOException {
-		Path dir = Paths.get(diaryDocumentPathFactory.getBasePath());
-		Path fwfDir = Paths.get(diaryDocumentPathFactory.getBasePath().concat("folder_with_file/"));
-		Path ffDir = Paths.get(diaryDocumentPathFactory.getBasePath().concat("folder_with_file/file.txt"));
-		Path fwofDir = Paths.get(diaryDocumentPathFactory.getBasePath().concat("folder_without_file/"));
-		Path fDir = Paths.get(diaryDocumentPathFactory.getBasePath().concat("file.txt"));
+    public static void main(String[] args) throws Exception {
+        XWPFDocument doc = new XWPFDocument();
+        XWPFParagraph p = doc.createParagraph();
 
-		createFolder(fwfDir);
-		createFolder(fwofDir);
-		Files.createFile(ffDir, getMacFolderAttributes());
-		Files.createFile(fDir, getMacFolderAttributes());
+        XWPFRun r = p.createRun();
+        args = new String[]{"/Users/mqin/topit_me/112000607109b9ce07o.jpg"};
 
-		diaryDocumentPathFactory.setCleanFoldFirst(true);
-		diaryDocumentPathFactory.cleanFolder(dir);
+        for (String imgFile : args) {
+            int format;
 
-		Assert.assertEquals(Files.walk(dir).count(), 1);
-	}
+            if (imgFile.endsWith(".emf")) format = XWPFDocument.PICTURE_TYPE_EMF;
+            else if (imgFile.endsWith(".wmf")) format = XWPFDocument.PICTURE_TYPE_WMF;
+            else if (imgFile.endsWith(".pict")) format = XWPFDocument.PICTURE_TYPE_PICT;
+            else if (imgFile.endsWith(".jpeg") || imgFile.endsWith(".jpg")) format = XWPFDocument.PICTURE_TYPE_JPEG;
+            else if (imgFile.endsWith(".png")) format = XWPFDocument.PICTURE_TYPE_PNG;
+            else if (imgFile.endsWith(".dib")) format = XWPFDocument.PICTURE_TYPE_DIB;
+            else if (imgFile.endsWith(".gif")) format = XWPFDocument.PICTURE_TYPE_GIF;
+            else if (imgFile.endsWith(".tiff")) format = XWPFDocument.PICTURE_TYPE_TIFF;
+            else if (imgFile.endsWith(".eps")) format = XWPFDocument.PICTURE_TYPE_EPS;
+            else if (imgFile.endsWith(".bmp")) format = XWPFDocument.PICTURE_TYPE_BMP;
+            else if (imgFile.endsWith(".wpg")) format = XWPFDocument.PICTURE_TYPE_WPG;
+            else {
+                System.err.println("Unsupported picture: " + imgFile +
+                        ". Expected emf|wmf|pict|jpeg|png|dib|gif|tiff|eps|bmp|wpg");
+                continue;
+            }
 
-	@Test
-	public void wordDocumentGenerateTest() throws IOException, InvalidFormatException {
-		Path dir = Paths.get(diaryDocumentPathFactory.getBasePath());
-		diaryDocumentPathFactory.setCleanFoldFirst(true);
-		diaryDocumentPathFactory.cleanFolder(dir);
-		diaryDocumentPathFactory.createDiaryDocumentFileFolder(Optional.of("testMan/"));
+            r.setText(imgFile);
+            r.addBreak();
+            r.addPicture(new FileInputStream(imgFile), format, imgFile, Units.toEMU(200), Units.toEMU(200)); // 200x200 pixels
+            r.addBreak(BreakType.PAGE);
+        }
 
-		XWPFDocument doc = new XWPFDocument();
+        FileOutputStream out = new FileOutputStream("images.docx");
+        doc.write(out);
+        out.close();
+    }
 
-		XWPFParagraph p1 = doc.createParagraph();
+    @Test
+    public void wordDocumentFolderTest() throws IOException {
+        Path dir = Paths.get(diaryDocumentPathFactory.getBasePath());
+        Path fwfDir = Paths.get(diaryDocumentPathFactory.getBasePath().concat("folder_with_file/"));
+        Path ffDir = Paths.get(diaryDocumentPathFactory.getBasePath().concat("folder_with_file/file.txt"));
+        Path fwofDir = Paths.get(diaryDocumentPathFactory.getBasePath().concat("folder_without_file/"));
+        Path fDir = Paths.get(diaryDocumentPathFactory.getBasePath().concat("file.txt"));
 
-		XWPFRun r1 = p1.createRun();
-		r1.setBold(true);
-		r1.setText("Excelsior†");
-		r1.setFontSize(20);
+        createFolder(fwfDir);
+        createFolder(fwofDir);
+        Files.createFile(ffDir, getMacFolderAttributes());
+        Files.createFile(fDir, getMacFolderAttributes());
 
-		XWPFParagraph p2 = doc.createParagraph();
-		XWPFRun r2 = p2.createRun();
-		FileInputStream avatar = new FileInputStream("/Users/Yove/Downloads/101237285739d4fc74.jpg");
-		BufferedImage bi = ImageIO.read(avatar);
-		r2.addPicture(avatar, XWPFDocument.PICTURE_TYPE_JPEG, "Avatar", bi.getWidth(), bi.getHeight());
-		avatar.close();
+        diaryDocumentPathFactory.setCleanFoldFirst(true);
+        diaryDocumentPathFactory.cleanFolder(dir);
 
-		XWPFParagraph p3 = doc.createParagraph();
-		XWPFRun r3 = p3.createRun();
-		r3.setText("2012-04-05 加入");
-		r3.setCapitalized(true);
-		r3.setBold(true);
+        Assert.assertEquals(Files.walk(dir).count(), 1);
+    }
 
-		String dateNotebookURL = tpURLFactory.getURL(URLFactory.DATE_NOTEBOOK, notebookId, diaryDate).get();
-		Optional optionalPid = Optional.of(notebookId);
-		org.jsoup.nodes.Document document = Jsoup.connect(dateNotebookURL).get();
-		List<Diary> dairies = diarySelector.select(document, optionalPid);
+    @Test
+    public void wordDocumentGenerateTest() throws IOException, InvalidFormatException {
+        Path dir = Paths.get(diaryDocumentPathFactory.getBasePath());
+        diaryDocumentPathFactory.setCleanFoldFirst(true);
+        diaryDocumentPathFactory.cleanFolder(dir);
+        diaryDocumentPathFactory.createDiaryDocumentFileFolder(Optional.of("testMan/"));
 
-		Notebook mockNotebook = Notebook.newInstance(notebookId);
-		mockNotebook.setName("- Closed Note -");
+        XWPFDocument doc = new XWPFDocument();
 
-		dairies.forEach(diary -> diaryWriter.output(doc, diary, mockNotebook));
+        XWPFParagraph p1 = doc.createParagraph();
+        XWPFRun r1 = p1.createRun();
+        r1.setBold(true);
+        r1.setText("Excelsior†");
+        r1.setFontSize(20);
+        r1.addCarriageReturn();
 
-		diaryDocumentPathFactory.createDiaryDocument(doc, Optional.of("testMan"), Optional.of("testMan"));
-	}
+        XWPFParagraph p2 = doc.createParagraph();
+        XWPFRun r2 = p2.createRun();
+        String image = "/Users/mqin/topit_me/112000607109b9ce07o.jpg";
+//		FileInputStream avatar = new FileInputStream("/Users/Yove/Downloads/101237285739d4fc74.jpg");
+        FileInputStream avatar = new FileInputStream(image);
+        int imageFormat = getImageFormat(image);
+//        BufferedImage bi = ImageIO.read(avatar);
+//        r2.setText("/Users/mqin/topit_me/112000607109b9ce07o.jpg");
+//        r2.addBreak();
+//        r2.addPicture(avatar, imageFormat, "/Users/mqin/topit_me/112000607109b9ce07o.jpg", bi.getWidth(), bi.getHeight());
+        r2.addPicture(avatar, imageFormat, image, Units.toEMU(200), Units.toEMU(200));
+        r2.addBreak();
+//        r2.addPicture(avatar, imageFormat, image, bi.getWidth(), bi.getHeight());
+        r2.addBreak(BreakType.PAGE);
+//        avatar.close();
 
+        XWPFParagraph p3 = doc.createParagraph();
+        XWPFRun r3 = p3.createRun();
+        r3.setText("2012-04-05 加入");
+        r3.setCapitalized(true);
+        r3.setBold(true);
+        r3.addBreak();
+        p3.setPageBreak(true);
+
+        XWPFParagraph p4 = doc.createParagraph();
+        XWPFRun r4 = p4.createRun();
+        r4.setText("2012-04-05 加入");
+        r4.setCapitalized(true);
+        r4.setBold(true);
+        r4.addBreak();
+        p4.setPageBreak(true);
+
+//		String dateNotebookURL = tpURLFactory.getURL(URLFactory.DATE_NOTEBOOK, notebookId, diaryDate).get();
+//		Optional optionalPid = Optional.of(notebookId);
+//		org.jsoup.nodes.Document document = Jsoup.connect(dateNotebookURL).get();
+//		List<Diary> dairies = diarySelector.select(document, optionalPid);
+//
+//		Notebook mockNotebook = Notebook.newInstance(notebookId);
+//		mockNotebook.setName("- Closed Note -");
+//
+//		dairies.forEach(diary -> diaryWriter.output(doc, diary, mockNotebook));
+
+        diaryDocumentPathFactory.createDiaryDocument(doc, Optional.of("testMan"), Optional.of("testMan"));
+    }
+
+
+    private int getImageFormat(String imgFile) {
+        int format = 0;
+        if (imgFile.endsWith(".emf")) format = XWPFDocument.PICTURE_TYPE_EMF;
+        else if (imgFile.endsWith(".wmf")) format = XWPFDocument.PICTURE_TYPE_WMF;
+        else if (imgFile.endsWith(".pict")) format = XWPFDocument.PICTURE_TYPE_PICT;
+        else if (imgFile.endsWith(".jpeg") || imgFile.endsWith(".jpg")) format = XWPFDocument.PICTURE_TYPE_JPEG;
+        else if (imgFile.endsWith(".png")) format = XWPFDocument.PICTURE_TYPE_PNG;
+        else if (imgFile.endsWith(".dib")) format = XWPFDocument.PICTURE_TYPE_DIB;
+        else if (imgFile.endsWith(".gif")) format = XWPFDocument.PICTURE_TYPE_GIF;
+        else if (imgFile.endsWith(".tiff")) format = XWPFDocument.PICTURE_TYPE_TIFF;
+        else if (imgFile.endsWith(".eps")) format = XWPFDocument.PICTURE_TYPE_EPS;
+        else if (imgFile.endsWith(".bmp")) format = XWPFDocument.PICTURE_TYPE_BMP;
+        else if (imgFile.endsWith(".wpg")) format = XWPFDocument.PICTURE_TYPE_WPG;
+        return format;
+    }
 }
