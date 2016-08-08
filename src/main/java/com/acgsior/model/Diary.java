@@ -18,6 +18,8 @@ public class Diary extends Base {
 
     private String image;
 
+    private String notebookName;
+
     public static Diary newInstance(String diaryId) {
         Diary instance = new Diary();
         instance.setId(diaryId);
@@ -34,6 +36,10 @@ public class Diary extends Base {
         sb.append(", content='").append(content.replaceAll("\n", " ")).append('\'');
         sb.append('}');
         return sb.toString();
+    }
+
+    public String getNotebookOutputName() {
+        return new StringBuilder().append("\u300a").append(notebookName).append("\u300b").toString();
     }
 
     public String getContent() {
@@ -76,4 +82,11 @@ public class Diary extends Base {
         this.image = image;
     }
 
+    public String getNotebookName() {
+        return notebookName;
+    }
+
+    public void setNotebookName(String notebookName) {
+        this.notebookName = notebookName;
+    }
 }

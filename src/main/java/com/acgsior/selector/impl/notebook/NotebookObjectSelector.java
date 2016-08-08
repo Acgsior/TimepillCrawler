@@ -48,22 +48,23 @@ public class NotebookObjectSelector extends ObjectSelector<List<Notebook>> imple
 
         cache(notebooks);
 
-        notebooks.parallelStream().forEach(notebook -> {
-            Optional<Document> notebookDocOptional = DocumentProvider.fetch(standardizeURL(notebook.getLocation()));
-            if (notebookDocOptional.isPresent()) {
-                List<String> diaryLinks = diaryLinksSelector.select(notebookDocOptional.get(), notebook.getOptionalId());
+        notebooks.parallelStream().filter(notebook -> !notebook.isNotebookExpired())
+                .forEach(notebook -> {
+                    Optional<Document> notebookDocOptional = DocumentProvider.fetch(standardizeURL(notebook.getLocation()));
+                    if (notebookDocOptional.isPresent()) {
+                        List<String> diaryLinks = diaryLinksSelector.select(notebookDocOptional.get(), notebook.getOptionalId());
 
-                List<CompletableFuture<List<Diary>>> diarySelectFutures = diaryLinks.stream()
-                        .map(diaryLink -> DocumentProvider.fetch(diaryLink))
-                        .filter(Optional::isPresent)
-                        .map(diaryDocOptional -> CompletableFuture.supplyAsync(
-                                () -> diarySelector.select(diaryDocOptional.get(), notebook.getOptionalId()),
-                                ExecutorProvider.getDiaryExecutor()))
-                        .collect(Collectors.toList());
+                        List<CompletableFuture<List<Diary>>> diarySelectFutures = diaryLinks.stream()
+                                .map(diaryLink -> DocumentProvider.fetch(diaryLink))
+                                .filter(Optional::isPresent)
+                                .map(diaryDocOptional -> CompletableFuture.supplyAsync(
+                                        () -> diarySelector.select(diaryDocOptional.get(), notebook.getOptionalId()),
+                                        ExecutorProvider.getDiaryExecutor()))
+                                .collect(Collectors.toList());
 
-                diarySelectFutures.forEach(CompletableFuture::join);
-            }
-        });
+                        diarySelectFutures.forEach(CompletableFuture::join);
+                    }
+                });
 
         return notebooks;
     }
