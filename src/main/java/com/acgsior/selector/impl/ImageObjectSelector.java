@@ -3,6 +3,7 @@ package com.acgsior.selector.impl;
 import com.acgsior.image.ImageDownloader;
 import com.acgsior.image.ImageType;
 import com.acgsior.selector.AttributeObjectSelector;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,44 +17,53 @@ import java.util.Optional;
  */
 public class ImageObjectSelector extends AttributeObjectSelector {
 
-    private static Logger logger = LoggerFactory.getLogger(ImageObjectSelector.class);
+	private static Logger logger = LoggerFactory.getLogger(ImageObjectSelector.class);
 
-    private boolean synchronize;
+	private boolean synchronize;
 
-    @Autowired
-    private ImageDownloader syncDownloader;
+	@Autowired
+	private ImageDownloader syncDownloader;
 
-    private ImageDownloader asyncDownloader;
+	private ImageDownloader asyncDownloader;
 
-    private ImageType imageType;
+	private ImageType imageType;
 
-    @Override
-    public String select(final Element element, final Optional parentId) {
-        String imageSrc = standardizeImageURL(super.select(element, parentId));
-        try {
-            if (synchronize) {
-                syncDownloader.downloadImage(imageType, imageSrc, String.valueOf(parentId.get()));
-            } else {
-                asyncDownloader.downloadImage(imageType, imageSrc, String.valueOf(parentId.get()));
-            }
-        } catch (IOException e) {
-            logger.error(String.format("Failed to download image: %s", imageSrc));
-        }
-        return String.valueOf(parentId.get());
-    }
+	@Override
+	public String select(final Element element, final Optional parentId) {
+		String imageSrc = super.select(element, parentId);
+		if (StringUtils.isBlank(imageSrc)) {
+			return StringUtils.EMPTY;
+		}
+		imageSrc = standardizeImageURL(imageSrc);
 
-    protected String standardizeImageURL(String URL) {
-        if (!URL.startsWith("http:")) {
-            return "http:".concat(URL);
-        }
-        return URL;
-    }
+		String imagePath = StringUtils.EMPTY;
+		try {
+			if (synchronize) {
+				imagePath = syncDownloader.downloadImage(imageType, imageSrc, String.valueOf(parentId.get())).toString();
+			} else {
+				imagePath = asyncDownloader.downloadImage(imageType, imageSrc, String.valueOf(parentId.get())).toString();
+			}
+		} catch (IOException e) {
+			logger.error(String.format("Failed to download image: %s", imageSrc));
+		}
+		return imagePath;
+	}
 
-    public void setSynchronize(final boolean synchronize) {
-        this.synchronize = synchronize;
-    }
+	protected String standardizeImageURL(String URL) {
+		if (StringUtils.isBlank(URL)) {
+			return URL;
+		}
+		if (!URL.startsWith("http:")) {
+			return "http:".concat(URL);
+		}
+		return URL;
+	}
 
-    public void setImageType(final ImageType imageType) {
-        this.imageType = imageType;
-    }
+	public void setSynchronize(final boolean synchronize) {
+		this.synchronize = synchronize;
+	}
+
+	public void setImageType(final ImageType imageType) {
+		this.imageType = imageType;
+	}
 }

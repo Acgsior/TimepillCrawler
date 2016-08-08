@@ -47,22 +47,31 @@ public class IntegrationTest {
 	private CacheManager cacheManager;
 
 	@Test
-	public void test() throws IOException {
-		String personURL = URLFactory.getURL(URLFactory.PERSON, pidOfJane).get();
+	public void testMine() throws IOException {
+		test(pidOfMine);
+	}
+
+	@Test
+	public void testJane() throws IOException {
+		test(pidOfJane);
+	}
+
+	public void test(String pid) throws IOException {
+		String personURL = URLFactory.getURL(URLFactory.PERSON, pid).get();
 		Document document = Jsoup.connect(personURL).get();
 
-		personSelector.select(document, Optional.of(pidOfMine));
+		personSelector.select(document, Optional.of(pid));
 
 		Path dir = Paths.get(diaryDocumentPathFactory.getBasePath());
-		//diaryDocumentPathFactory.setCleanFoldFirst(true);
-		//diaryDocumentPathFactory.cleanFolder(dir);
-		diaryDocumentPathFactory.createDiaryDocumentFileFolder(Optional.of(pidOfJane));
+		diaryDocumentPathFactory.setCleanFoldFirst(true);
+		diaryDocumentPathFactory.cleanFolder(dir);
+		diaryDocumentPathFactory.createDiaryDocumentFileFolder(Optional.of(pid));
 
 		((ICrawledDataCacheLogger) cacheManager.getCache()).logCacheStatus();
 
 		XWPFDocument doc = new XWPFDocument();
 		documentWriterManager.writeByDateTime(doc);
 
-		diaryDocumentPathFactory.createDiaryDocument(doc, Optional.of(pidOfMine), Optional.of(pidOfMine));
+		diaryDocumentPathFactory.createDiaryDocument(doc, Optional.of(pid), Optional.of(pid));
 	}
 }

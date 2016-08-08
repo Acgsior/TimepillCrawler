@@ -19,32 +19,31 @@ import java.util.Map;
  */
 public class ImagePathFactory implements ICreateFolder {
 
-    private static Logger log = LoggerFactory.getLogger(ImagePathFactory.class);
+	private static Logger log = LoggerFactory.getLogger(ImagePathFactory.class);
 
-    private Map<ImageType, String> imageTypeBasePathMap;
+	private Map<ImageType, String> imageTypeBasePathMap;
 
-    public ImagePathFactory(Map<ImageType, String> imageTypeBasePathMap) {
-        imageTypeBasePathMap.values().forEach(dir -> initial(dir));
-        this.imageTypeBasePathMap = imageTypeBasePathMap;
-    }
+	public ImagePathFactory(Map<ImageType, String> imageTypeBasePathMap) {
+		imageTypeBasePathMap.values().forEach(dir -> initial(dir));
+		this.imageTypeBasePathMap = imageTypeBasePathMap;
+	}
 
-    protected void initial(String dir) {
-        Path path = Paths.get(dir);
-        if (Files.notExists(path, LinkOption.NOFOLLOW_LINKS)) {
-            try {
-                createFolder(path);
-            } catch (CrawlerInitialException e) {
-                log.error("Create image file directory failed: ", e);
-            }
-        }
-    }
+	protected void initial(String dir) {
+		Path path = Paths.get(dir);
+		if (Files.notExists(path, LinkOption.NOFOLLOW_LINKS)) {
+			try {
+				createFolder(path);
+			} catch (CrawlerInitialException e) {
+				log.error("Create image file directory failed: ", e);
+			}
+		}
+	}
 
-    public String getImageExtension(String URL) {
-        return Splitter.on('?').splitToList(Iterables.getLast(Splitter.on('.').split(URL))).get(0);
-    }
+	public String getImageExtension(String URL) {
+		return Splitter.on('!').splitToList(Splitter.on('?').splitToList(Iterables.getLast(Splitter.on('.').split(URL))).get(0)).get(0);
+	}
 
-    public String getPathWithoutExtension(ImageType imageType, String objectId) {
-        return imageTypeBasePathMap.get(imageType).toString().concat(objectId);
-    }
-
+	public String getPathWithoutExtension(ImageType imageType, String objectId) {
+		return imageTypeBasePathMap.get(imageType).toString().concat(objectId);
+	}
 }

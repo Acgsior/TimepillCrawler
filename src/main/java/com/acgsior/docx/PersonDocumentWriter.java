@@ -6,6 +6,7 @@ import com.acgsior.model.Person;
 import com.google.common.base.Splitter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -37,14 +38,18 @@ public class PersonDocumentWriter implements IDocumentWriter<Person>, ILocalDate
 		name.setText(person.getName());
 		name.setBold(true);
 		name.setFontSize(20);
+		name.addCarriageReturn();
 
 		// avatar
 		if (StringUtils.isNotBlank(person.getAvatar())) {
 			ImageDto imageDto = ImageDto.newInstance(person.getAvatar());
+
 			XWPFParagraph paragraph2 = doc.createParagraph();
 			XWPFRun avatar = paragraph2.createRun();
+
 			try (FileInputStream fis = imageDto.getImageInputStream()) {
-				avatar.addPicture(fis, imageDto.getFormat(), imageDto.getImage(), imageDto.getWidth(), imageDto.getHeight());
+				avatar.addPicture(fis, imageDto.getFormat(), imageDto.getImage(), Units.toEMU(imageDto.getWidth()),
+						Units.toEMU(imageDto.getHeight()));
 			} catch (InvalidFormatException | IOException e) {
 				logger.error("Insert avatar failed for person: " + person.getAvatar(), e);
 				// TODO add default avatar

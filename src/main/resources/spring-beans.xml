@@ -67,6 +67,7 @@
 
     <bean id="imageSyncDownloader" name="imageSyncDownloader" class="com.acgsior.image.ImageSyncDownloader">
         <property name="imagePathFactory" ref="imagePathFactory" />
+        <property name="deletedDuplicate" value="true" />
     </bean>
 
     <!-- === CACHE ===  -->

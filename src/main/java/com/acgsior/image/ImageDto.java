@@ -13,6 +13,8 @@ import java.io.IOException;
  */
 public class ImageDto {
 
+	private static final int MAX_SIZE = 400;
+
 	private String image;
 
 	private int width;
@@ -22,6 +24,11 @@ public class ImageDto {
 	public static ImageDto newInstance(String image) {
 		ImageDto instance = new ImageDto();
 		instance.setImage(image);
+		try {
+			instance.init();
+		} catch (IOException e) {
+
+		}
 		return instance;
 	}
 
@@ -29,12 +36,18 @@ public class ImageDto {
 		return new FileInputStream(image);
 	}
 
-	public void init() throws IOException {
+	public ImageDto init() throws IOException {
 		try (FileInputStream fis = getImageInputStream()) {
 			BufferedImage bi = ImageIO.read(fis);
-			width = bi.getWidth();
-			height = bi.getHeight();
+			if (bi.getWidth() <= MAX_SIZE) {
+				width = bi.getWidth();
+				height = bi.getHeight();
+			} else {
+				width = MAX_SIZE;
+				height = Double.valueOf(bi.getHeight() * MAX_SIZE * 1d / bi.getWidth()).intValue();
+			}
 		}
+		return this;
 	}
 
 	public int getFormat() {

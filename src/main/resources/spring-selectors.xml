@@ -6,154 +6,165 @@
        http://www.springframework.org/schema/util
        http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 
-	<!-- === SELECTORS === -->
-	<bean id="personNameSelector" name="personNameSelector" class="com.acgsior.selector.impl.TextObjectSelector">
-		<property name="pattern" value=".user-info h2 a" />
-		<property name="id" value="person.name" />
-	</bean>
+    <!-- === SELECTORS === -->
+    <bean id="personNameSelector" name="personNameSelector" class="com.acgsior.selector.impl.TextObjectSelector">
+        <property name="pattern" value=".user-info h2 a" />
+        <property name="id" value="person.name" />
+    </bean>
 
-	<bean id="registerDateSelector" name="registerDateSelector" class="com.acgsior.selector.impl.DateObjectSelector">
-		<property name="pattern" value=".user-info p" />
-		<property name="id" value="person.registerDate" />
-	</bean>
+    <bean id="registerDateSelector" name="registerDateSelector" class="com.acgsior.selector.impl.DateObjectSelector">
+        <property name="pattern" value=".user-info p" />
+        <property name="id" value="person.registerDate" />
+    </bean>
 
-	<bean id="personDescriptionSelector" name="personDescriptionSelector"
-	      class="com.acgsior.selector.impl.TextObjectSelector">
-		<property name="pattern" value=".user-info pre" />
-		<property name="id" value="person.description" />
-	</bean>
+    <bean id="personDescriptionSelector" name="personDescriptionSelector"
+          class="com.acgsior.selector.impl.TextObjectSelector">
+        <property name="pattern" value=".user-info pre" />
+        <property name="id" value="person.description" />
+    </bean>
 
-	<bean id="avatarSelector" name="avatarSelector" class="com.acgsior.selector.impl.ImageObjectSelector">
-		<property name="pattern" value=".user-info a img" />
-		<property name="attributePattern" value="src" />
-		<property name="imageType">
-			<util:constant static-field="com.acgsior.image.ImageType.AVATAR" />
-		</property>
-		<property name="synchronize" value="true" />
-		<property name="id" value="person.avatar" />
-	</bean>
+    <bean id="avatarSelector" name="avatarSelector" class="com.acgsior.selector.impl.ImageObjectSelector">
+        <property name="pattern" value=".user-info a img" />
+        <property name="attributePattern" value="src" />
+        <property name="imageType">
+            <util:constant static-field="com.acgsior.image.ImageType.AVATAR" />
+        </property>
+        <property name="synchronize" value="true" />
+        <property name="id" value="person.avatar" />
+    </bean>
 
-	<bean id="personSelector" name="personSelector" class="com.acgsior.selector.impl.person.PersonObjectSelector">
-		<property name="pattern" value="body" />
-		<property name="cacheManager" ref="cacheManager" />
-		<property name="syncSelectors">
-			<array>
-				<ref bean="personNameSelector" />
-				<ref bean="registerDateSelector" />
-				<ref bean="personDescriptionSelector" />
-				<!--<ref bean="avatarSelector" />-->
-			</array>
-		</property>
-		<property name="notebookSelector" ref="notebookSelector" />
-	</bean>
+    <bean id="personSelector" name="personSelector" class="com.acgsior.selector.impl.person.PersonObjectSelector">
+        <property name="pattern" value="body" />
+        <property name="cacheManager" ref="cacheManager" />
+        <property name="syncSelectors">
+            <array>
+                <ref bean="personNameSelector" />
+                <ref bean="registerDateSelector" />
+                <ref bean="personDescriptionSelector" />
+                <ref bean="avatarSelector" />
+            </array>
+        </property>
+        <property name="notebookSelector" ref="notebookSelector" />
+    </bean>
 
-	<bean id="notebookIdSelector" name="notebookIdSelector"
-	      class="com.acgsior.selector.impl.LastSplitAttributeSelector">
-		<property name="pattern" value="h3 a" />
-		<property name="attributePattern" value="href" />
-		<property name="split" value="/" />
-		<property name="id" value="notebook.id" />
-	</bean>
+    <bean id="notebookIdSelector" name="notebookIdSelector"
+          class="com.acgsior.selector.impl.LastSplitAttributeSelector">
+        <property name="pattern" value="h3 a" />
+        <property name="attributePattern" value="href" />
+        <property name="split" value="/" />
+        <property name="id" value="notebook.id" />
+    </bean>
 
-	<bean id="notebookLinkSelector" name="notebookLinkSelector"
-	      class="com.acgsior.selector.impl.LinkAttributeSelector">
-		<property name="pattern" value="h3 a" />
-		<property name="attributePattern" value="href" />
-		<property name="standardize" value="true" />
-		<property name="id" value="notebook.location" />
-	</bean>
+    <bean id="notebookLinkSelector" name="notebookLinkSelector"
+          class="com.acgsior.selector.impl.LinkAttributeSelector">
+        <property name="pattern" value="h3 a" />
+        <property name="attributePattern" value="href" />
+        <property name="standardize" value="true" />
+        <property name="id" value="notebook.location" />
+    </bean>
 
-	<bean id="notebookNameSelector" name="notebookNameSelector" class="com.acgsior.selector.impl.TextObjectSelector">
-		<property name="pattern" value="h3 a" />
-		<property name="id" value="notebook.name" />
-	</bean>
+    <bean id="notebookNameSelector" name="notebookNameSelector" class="com.acgsior.selector.impl.TextObjectSelector">
+        <property name="pattern" value="h3 a" />
+        <property name="id" value="notebook.name" />
+    </bean>
 
-	<bean id="notebookBeginEndDateSelector" name="notebookBeginEndDateSelector"
-	      class="com.acgsior.selector.impl.notebook.NotebookBeginEndDateSelector">
-		<property name="pattern" value="p" />
-		<property name="id" value="notebook.beginEnd" />
-	</bean>
+    <bean id="notebookBeginEndDateSelector" name="notebookBeginEndDateSelector"
+          class="com.acgsior.selector.impl.notebook.NotebookBeginEndDateSelector">
+        <property name="pattern" value="p" />
+        <property name="id" value="notebook.beginEnd" />
+    </bean>
 
-	<bean id="coverSelector" name="coverSelector" class="com.acgsior.selector.impl.ImageObjectSelector">
-		<property name="pattern" value="a.cov img.cover" />
-		<property name="attributePattern" value="src" />
-		<property name="imageType">
-			<util:constant static-field="com.acgsior.image.ImageType.COVER" />
-		</property>
-		<property name="synchronize" value="true" />
-		<property name="id" value="notebook.cover" />
-	</bean>
+    <bean id="coverSelector" name="coverSelector" class="com.acgsior.selector.impl.ImageObjectSelector">
+        <property name="pattern" value="a.cov img.cover" />
+        <property name="attributePattern" value="src" />
+        <property name="imageType">
+            <util:constant static-field="com.acgsior.image.ImageType.COVER" />
+        </property>
+        <property name="synchronize" value="true" />
+        <property name="id" value="notebook.cover" />
+    </bean>
 
-	<bean name="notebookSelector" id="notebookSelector"
-	      class="com.acgsior.selector.impl.notebook.NotebookObjectSelector">
-		<property name="pattern" value=".notebooks .notebook" />
-		<property name="idSelector" ref="notebookIdSelector" />
-		<property name="cacheManager" ref="cacheManager" />
-		<property name="syncSelectors">
-			<array>
-				<ref bean="notebookNameSelector" />
-				<ref bean="notebookBeginEndDateSelector" />
-				<!--<ref bean="coverSelector" />-->
-				<ref bean="notebookLinkSelector" />
-			</array>
-		</property>
-		<property name="diaryLinksSelector" ref="diaryLinksSelector" />
-		<property name="diarySelector" ref="diarySelector" />
-	</bean>
+    <bean name="notebookSelector" id="notebookSelector"
+          class="com.acgsior.selector.impl.notebook.NotebookObjectSelector">
+        <property name="pattern" value=".notebooks .notebook" />
+        <property name="idSelector" ref="notebookIdSelector" />
+        <property name="cacheManager" ref="cacheManager" />
+        <property name="syncSelectors">
+            <array>
+                <ref bean="notebookNameSelector" />
+                <ref bean="notebookBeginEndDateSelector" />
+                <!--<ref bean="coverSelector" />-->
+                <ref bean="notebookLinkSelector" />
+            </array>
+        </property>
+        <property name="diaryLinksSelector" ref="diaryLinksSelector" />
+        <property name="diarySelector" ref="diarySelector" />
+    </bean>
 
-	<bean name="diaryIdSelector" id="diaryIdSelector" class="com.acgsior.selector.impl.LastSplitAttributeSelector">
-		<property name="pattern" value=".body div.bottom a" />
-		<property name="attributePattern" value="href" />
-		<property name="split" value="/" />
-		<property name="id" value="diary.id" />
-	</bean>
+    <bean name="diaryIdSelector" id="diaryIdSelector" class="com.acgsior.selector.impl.LastSplitAttributeSelector">
+        <property name="pattern" value=".body div.bottom a" />
+        <property name="attributePattern" value="href" />
+        <property name="split" value="/" />
+        <property name="id" value="diary.id" />
+    </bean>
 
-	<bean name="diaryLinkSelector" id="diaryLinkSelector" class="com.acgsior.selector.impl.LinkAttributeSelector">
-		<property name="pattern" value=".body div.bottom a" />
-		<property name="attributePattern" value="href" />
-		<property name="standardize" value="true" />
-		<property name="id" value="diary.id" />
-	</bean>
+    <bean name="diaryLinkSelector" id="diaryLinkSelector" class="com.acgsior.selector.impl.LinkAttributeSelector">
+        <property name="pattern" value=".body div.bottom a" />
+        <property name="attributePattern" value="href" />
+        <property name="standardize" value="true" />
+        <property name="id" value="diary.id" />
+    </bean>
 
-	<bean name="diaryTimeSelector" id="diaryTimeSelector" class="com.acgsior.selector.impl.TimeObjectSelector">
-		<property name="pattern" value=".body div.title" />
-		<property name="id" value="diary.diaryTime" />
-	</bean>
+    <bean name="diaryTimeSelector" id="diaryTimeSelector" class="com.acgsior.selector.impl.TimeObjectSelector">
+        <property name="pattern" value=".body div.title" />
+        <property name="id" value="diary.diaryTime" />
+    </bean>
 
-	<bean name="diaryDateSelector" id="diaryDateSelector" class="com.acgsior.selector.impl.DateObjectSelector">
-		<property name="pattern" value=".title-date" />
-		<property name="id" value="diary.diaryDate" />
-		<property name="datePattern" value="MMddyyyy" />
-	</bean>
+    <bean name="diaryDateSelector" id="diaryDateSelector" class="com.acgsior.selector.impl.DateObjectSelector">
+        <property name="pattern" value=".title-date" />
+        <property name="id" value="diary.diaryDate" />
+        <property name="datePattern" value="MMddyyyy" />
+    </bean>
 
-	<bean id="diaryContentSelector" name="diaryContentSelector" class="com.acgsior.selector.impl.TextObjectSelector">
-		<property name="pattern" value=".body pre.content" />
-		<property name="id" value="diary.content" />
-	</bean>
+    <bean id="diaryContentSelector" name="diaryContentSelector" class="com.acgsior.selector.impl.TextObjectSelector">
+        <property name="pattern" value=".body pre.content" />
+        <property name="id" value="diary.content" />
+    </bean>
 
-	<bean id="diaryCommentCountSelector" name="diaryCommentCountSelector"
-	      class="com.acgsior.selector.impl.diary.DiaryCommentCountSelector">
-		<property name="pattern" value=".body div.bottom a" />
-		<property name="id" value="diary.commentCount" />
-	</bean>
+    <bean id="diaryCommentCountSelector" name="diaryCommentCountSelector"
+          class="com.acgsior.selector.impl.diary.DiaryCommentCountSelector">
+        <property name="pattern" value=".body div.bottom a" />
+        <property name="id" value="diary.commentCount" />
+    </bean>
 
-	<bean name="diarySelector" id="diarySelector" class="com.acgsior.selector.impl.diary.DiaryObjectSelector">
-		<property name="pattern" value="#diarys .diary" />
-		<property name="idSelector" ref="diaryIdSelector" />
-		<property name="cacheManager" ref="cacheManager" />
-		<property name="syncSelectors">
-			<array>
-				<ref bean="diaryContentSelector" />
-				<ref bean="diaryTimeSelector" />
-				<ref bean="diaryCommentCountSelector" />
-			</array>
-		</property>
-		<property name="diaryDateSelector" ref="diaryDateSelector" />
-	</bean>
+    <bean name="diarySelector" id="diarySelector" class="com.acgsior.selector.impl.diary.DiaryObjectSelector">
+        <property name="pattern" value="#diarys .diary" />
+        <property name="idSelector" ref="diaryIdSelector" />
+        <property name="cacheManager" ref="cacheManager" />
+        <property name="syncSelectors">
+            <array>
+                <ref bean="diaryContentSelector" />
+                <ref bean="diaryTimeSelector" />
+                <ref bean="diaryCommentCountSelector" />
+                <ref bean="diaryImageSelector" />
+            </array>
+        </property>
+        <property name="diaryDateSelector" ref="diaryDateSelector" />
+    </bean>
 
-	<bean id="diaryLinksSelector" name="diaryLinksSelector"
-	      class="com.acgsior.selector.impl.diary.DiaryLinksSelector">
-		<property name="pattern" value="div.calendar-box table tbody a" />
-		<property name="nextMonthPattern" value=".next_moon" />
-	</bean>
+    <bean id="diaryImageSelector" name="diaryImageSelector" class="com.acgsior.selector.impl.ImageObjectSelector">
+        <property name="pattern" value=".body pre.content img.thumbnail" />
+        <property name="attributePattern" value="src" />
+        <property name="imageType">
+            <util:constant static-field="com.acgsior.image.ImageType.IMAGE" />
+        </property>
+        <property name="synchronize" value="true" />
+        <property name="id" value="diary.image" />
+    </bean>
+
+    <bean id="diaryLinksSelector" name="diaryLinksSelector"
+          class="com.acgsior.selector.impl.diary.DiaryLinksSelector">
+        <property name="pattern" value="div.calendar-box table tbody a" />
+        <property name="nextMonthPattern" value=".next_moon" />
+    </bean>
 </beans>

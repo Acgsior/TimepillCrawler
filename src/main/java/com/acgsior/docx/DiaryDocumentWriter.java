@@ -8,6 +8,7 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -50,10 +51,13 @@ public class DiaryDocumentWriter implements IDocumentWriter<Diary>, ILocalDateTi
 		// image
 		if (StringUtils.isNotBlank(diary.getImage())) {
 			ImageDto imageDto = ImageDto.newInstance(diary.getImage());
+
 			XWPFParagraph paragraph2 = doc.createParagraph();
 			XWPFRun avatar = paragraph2.createRun();
+
 			try (FileInputStream fis = imageDto.getImageInputStream()) {
-				avatar.addPicture(fis, imageDto.getFormat(), imageDto.getImage(), imageDto.getWidth(), imageDto.getHeight());
+				avatar.addPicture(fis, imageDto.getFormat(), imageDto.getImage(), Units.toEMU(imageDto.getWidth()),
+						Units.toEMU(imageDto.getHeight()));
 			} catch (InvalidFormatException | IOException e) {
 				logger.error("Insert avatar failed for diary: " + diary.getImage(), e);
 				// TODO add default avatar
@@ -74,9 +78,10 @@ public class DiaryDocumentWriter implements IDocumentWriter<Diary>, ILocalDateTi
 	}
 
 	protected String makeHeader(Diary diary) {
-		return Joiner.on("\t\t\t\t").skipNulls().join(Lists.newArrayList(localTimeToString(diary.getDiaryTime(), DIARY_TIME_FORMATTER),
-				localDateToString(diary.getDiaryDate(), DIARY_DATE_FORMATTER), diary.getDiaryDate().getDayOfWeek(),
-				diary.getNotebookName()));
+		return Joiner.on("\t\t\t").skipNulls().join(Lists.newArrayList(localTimeToString(diary.getDiaryTime(), DIARY_TIME_FORMATTER),
+				localDateToString(diary.getDiaryDate(), DIARY_DATE_FORMATTER),
+				//diary.getDiaryDate().getDayOfWeek(),
+				diary.getNotebookOutputName()));
 	}
 
 	protected String makeComments(Diary diary) {
