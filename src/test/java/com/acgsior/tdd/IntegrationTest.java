@@ -30,6 +30,8 @@ public class IntegrationTest {
 
 	private String pidOfJane = "100123750";
 	private String pidOfMine = "100079421";
+	private String pidOfRedFish = "13896";
+	private String pidOfRaindrop = "100047651";
 
 	@Resource(name = "URLFactory")
 	private URLFactory URLFactory;
@@ -54,6 +56,16 @@ public class IntegrationTest {
 	@Test
 	public void testJane() throws IOException {
 		test(pidOfJane);
+	}
+
+	@Test
+	public void testRedFish() throws IOException {
+		test(pidOfRedFish);
+	}
+
+	@Test
+	public void testRaindrop() throws IOException {
+		test(pidOfRaindrop);
 	}
 
 	public void test(String pid) throws IOException {

@@ -23,7 +23,7 @@ public class ImageDto {
 
 	public static ImageDto newInstance(String image) {
 		ImageDto instance = new ImageDto();
-		instance.setImage(image);
+		instance.setImage(image.toLowerCase());
 		try {
 			instance.init();
 		} catch (IOException e) {
