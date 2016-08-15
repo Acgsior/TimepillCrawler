@@ -15,7 +15,7 @@ import java.nio.file.Paths;
 import java.util.Optional;
 
 /**
- * Created by mqin on 8/3/16.
+ * Created by Yove on 8/3/16.
  */
 public class DiaryDocumentPathFactory implements ICreateFolder, ICleanFolder {
 

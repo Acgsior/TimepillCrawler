@@ -1,9 +1,9 @@
 package com.acgsior.bootstrap;
 
 /**
- * Created by mqin on 8/4/16.
+ * Created by Yove on 8/4/16.
  */
-public interface ICrawledDataCacheLogger {
+public interface ICrawledDataCacheLogger extends ICrawledDataCache {
 
     void logCacheStatus();
 

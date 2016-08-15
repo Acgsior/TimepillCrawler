@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 /**
- * Created by mqin on 7/4/16.
+ * Created by Yove on 7/4/16.
  */
 public class PersonObjectSelector extends ObjectSelector<Person> implements ICachedSelector<Person> {
 

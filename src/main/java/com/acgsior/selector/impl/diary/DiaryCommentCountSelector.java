@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Created by mqin on 7/4/16.
+ * Created by Yove on 7/4/16.
  */
 public class DiaryCommentCountSelector extends TextObjectSelector {
 
     @Override
-    public String select(Element element, Optional parentId) {
+    public String select(Element element, Optional<String> parentId) {
         String countText = super.select(element, parentId);
         List<String> count = Splitter.on(' ').splitToList(countText);
         return count.size() == 2 ? count.get(0) : "0";

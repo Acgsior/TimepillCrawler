@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Created by mqin on 8/3/16.
+ * Created by Yove on 8/3/16.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring-context.xml")
@@ -55,12 +55,19 @@ public class POITest implements ICreateFolder, ICleanFolder {
     @Resource(name = "diaryWriter")
     private DiaryDocumentWriter diaryWriter;
 
+
+    /**
+     * POI Image Sample
+     *
+     * @param args
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception {
         XWPFDocument doc = new XWPFDocument();
         XWPFParagraph p = doc.createParagraph();
 
         XWPFRun r = p.createRun();
-        args = new String[]{"/Users/mqin/topit_me/112000607109b9ce07o.jpg"};
+        args = new String[] { "/Users/Yove/topit_me/112000607109b9ce07o.jpg" };
 
         for (String imgFile : args) {
             int format;
@@ -152,8 +159,8 @@ public class POITest implements ICreateFolder, ICleanFolder {
         r3.addBreak();
         p3.setPageBreak(true);
 
-		String dateNotebookURL = URLFactory.getURL(URLFactory.DATE_NOTEBOOK, notebookId, diaryDate).get();
-		Optional optionalPid = Optional.of(notebookId);
+        String dateNotebookURL = URLFactory.getURL(com.acgsior.factory.URLFactory.DATE_NOTEBOOK, notebookId, diaryDate).get();
+        Optional optionalPid = Optional.of(notebookId);
 		org.jsoup.nodes.Document document = Jsoup.connect(dateNotebookURL).get();
 		List<Diary> dairies = diarySelector.select(document, optionalPid);
 

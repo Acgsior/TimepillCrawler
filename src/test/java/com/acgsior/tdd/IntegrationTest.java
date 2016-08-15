@@ -22,7 +22,7 @@ import java.nio.file.Paths;
 import java.util.Optional;
 
 /**
- * Created by mqin on 8/3/16.
+ * Created by Yove on 8/3/16.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring-context.xml")
@@ -69,7 +69,7 @@ public class IntegrationTest {
 	}
 
 	public void test(String pid) throws IOException {
-		String personURL = URLFactory.getURL(URLFactory.PERSON, pid).get();
+		String personURL = URLFactory.getURL(com.acgsior.factory.URLFactory.PERSON, pid).get();
 		Document document = Jsoup.connect(personURL).get();
 
 		personSelector.select(document, Optional.of(pid));

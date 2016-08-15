@@ -7,7 +7,7 @@ import java.nio.file.Path;
 import java.util.Comparator;
 
 /**
- * Created by mqin on 8/3/16.
+ * Created by Yove on 8/3/16.
  */
 public interface ICleanFolder {
 

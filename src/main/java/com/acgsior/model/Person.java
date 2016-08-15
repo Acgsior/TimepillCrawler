@@ -3,7 +3,7 @@ package com.acgsior.model;
 import java.time.LocalDate;
 
 /**
- * Created by mqin on 7/4/16.
+ * Created by Yove on 7/4/16.
  */
 public class Person extends Base {
 

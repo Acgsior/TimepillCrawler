@@ -3,7 +3,7 @@ package com.acgsior.docx;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 /**
- * Created by mqin on 8/8/16.
+ * Created by Yove on 8/8/16.
  */
 public interface IDocumentWriter <T> {
 

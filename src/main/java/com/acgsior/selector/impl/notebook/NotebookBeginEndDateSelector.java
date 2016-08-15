@@ -12,14 +12,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * Created by mqin on 7/4/16.
+ * Created by Yove on 7/4/16.
  */
-public class NotebookBeginEndDateSelector extends PropertySelector {
+public class NotebookBeginEndDateSelector extends PropertySelector<List<LocalDate>> {
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault());
 
     @Override
-    public List<LocalDate> select(Element element, Optional parentId) {
+    public List<LocalDate> select(Element element, Optional<String> parentId) {
         String combinedDateText = element.select(getPattern()).get(getElementIndex()).text();
         // all date with pattern yyyy-MM-dd, so only reserve numbers to convert to date
         List<String> dateTexts = Splitter.on(' ').splitToList(combinedDateText);

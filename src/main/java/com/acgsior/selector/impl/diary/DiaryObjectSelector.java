@@ -1,7 +1,6 @@
 package com.acgsior.selector.impl.diary;
 
 import com.acgsior.bootstrap.ICachedSelector;
-import com.acgsior.cache.CacheManager;
 import com.acgsior.cache.DatetimeBasedCache;
 import com.acgsior.factory.BeanFactory;
 import com.acgsior.model.Diary;
@@ -18,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * TODO
@@ -26,7 +24,7 @@ import java.util.stream.Collectors;
  * 2. new diary selector should be submit to executor
  * 3. then select diary content
  * <p>
- * Created by mqin on 7/4/16.
+ * Created by Yove on 7/4/16.
  */
 public class DiaryObjectSelector extends ObjectSelector<List<Diary>> implements ICachedSelector<List<Diary>> {
 
@@ -43,9 +41,8 @@ public class DiaryObjectSelector extends ObjectSelector<List<Diary>> implements 
 
 		if (getCache() instanceof DatetimeBasedCache) {
 			DatetimeBasedCache cache = (DatetimeBasedCache) getCache();
-			Optional<Notebook> notebookOptional =
-					cache.getNotebookCache().values().stream().filter(notebook -> StringUtils.equals(parentId.get(), notebook.getId()))
-							.findFirst();
+			Optional<Notebook> notebookOptional = cache.getNotebookCache().values().stream()
+					.filter(notebook -> parentId.isPresent() && StringUtils.equals(parentId.get(), notebook.getId())).findFirst();
 			if (notebookOptional.isPresent()) {
 				tmpNotebookName = notebookOptional.get().getName();
 			}
@@ -55,7 +52,7 @@ public class DiaryObjectSelector extends ObjectSelector<List<Diary>> implements 
 
 		elements.forEach(element -> {
 			Diary diary = Diary.newInstance(getIdSelector().select(element, parentId));
-			diary.setParent(parentId.get());
+			diary.setParent(parentId.orElse(""));
 
 			Arrays.stream(getSyncSelectors()).forEach(selector -> {
 				Object value = selector.select(element, Optional.of(diary.getId()));
@@ -75,9 +72,7 @@ public class DiaryObjectSelector extends ObjectSelector<List<Diary>> implements 
 
 	@Override
 	public void cache(List<Diary> value) {
-		value.forEach(diary -> {
-			getCache().cacheDiary(diary);
-		});
+		value.forEach(diary -> getCache().cacheDiary(diary));
 	}
 
 	public void setDiaryDateSelector(DateObjectSelector diaryDateSelector) {

@@ -6,7 +6,7 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import java.util.Map;
 
 /**
- * Created by mqin on 8/8/16.
+ * Created by Yove on 8/8/16.
  */
 public class NotebooksDocumentWriter implements IDocumentWriter<Map<String, Notebook>> {
 

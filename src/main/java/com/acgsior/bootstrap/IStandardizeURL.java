@@ -3,7 +3,7 @@ package com.acgsior.bootstrap;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Created by mqin on 8/2/16.
+ * Created by Yove on 8/2/16.
  */
 public interface IStandardizeURL {
 

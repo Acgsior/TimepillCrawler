@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 /**
- * Created by mqin on 7/4/16.
+ * Created by Yove on 7/4/16.
  */
 public class Diary extends Base {
 

@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 /**
- * Created by mqin on 8/8/16.
+ * Created by Yove on 8/8/16.
  */
 public class NotebookDocumentWriter implements IDocumentWriter<Notebook>, ILocalDateTimeToStringConverter {
 

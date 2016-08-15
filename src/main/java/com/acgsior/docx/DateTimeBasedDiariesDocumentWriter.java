@@ -9,12 +9,11 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * Created by mqin on 8/8/16.
+ * Created by Yove on 8/8/16.
  */
 public class DateTimeBasedDiariesDocumentWriter implements IDocumentWriter<TreeMap<String, Diary>> {
 

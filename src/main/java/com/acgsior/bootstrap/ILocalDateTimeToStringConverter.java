@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 /**
- * Created by mqin on 8/4/16.
+ * Created by Yove on 8/4/16.
  */
 public interface ILocalDateTimeToStringConverter {
 

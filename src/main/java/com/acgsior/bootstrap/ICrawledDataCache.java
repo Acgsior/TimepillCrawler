@@ -5,7 +5,7 @@ import com.acgsior.model.Notebook;
 import com.acgsior.model.Person;
 
 /**
- * Created by mqin on 8/4/16.
+ * Created by Yove on 8/4/16.
  */
 public interface ICrawledDataCache {
 

@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Created by mqin on 8/3/16.
+ * Created by Yove on 8/3/16.
  */
 public class CacheManager {
 

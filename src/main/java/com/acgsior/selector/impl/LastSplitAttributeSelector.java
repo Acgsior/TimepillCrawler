@@ -5,7 +5,7 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 
 /**
- * Created by mqin on 7/4/16.
+ * Created by Yove on 7/4/16.
  */
 public class LastSplitAttributeSelector extends AttributeObjectSelector {
 

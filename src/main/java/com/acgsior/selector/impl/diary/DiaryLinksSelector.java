@@ -14,7 +14,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * Created by mqin on 8/2/16.
+ * Created by Yove on 8/2/16.
  */
 public class DiaryLinksSelector extends PropertySelector<List<String>> implements IStandardizeURL {
 
