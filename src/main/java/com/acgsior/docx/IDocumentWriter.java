@@ -7,6 +7,6 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
  */
 public interface IDocumentWriter <T> {
 
-	void output(XWPFDocument document, T t);
+	void output(XWPFDocument document, T object);
 
 }

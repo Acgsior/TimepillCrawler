@@ -1,7 +1,7 @@
 package com.acgsior.cache;
 
 import com.acgsior.bootstrap.ICrawledDataCache;
-import com.acgsior.exception.CrawlerInitialException;
+import com.acgsior.exception.CrawlerRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,49 +10,49 @@ import org.slf4j.LoggerFactory;
  */
 public class CacheManager {
 
-    private static Logger logger = LoggerFactory.getLogger(CacheManager.class);
+	private static Logger logger = LoggerFactory.getLogger(CacheManager.class);
 
-    private CacheType cacheType;
+	private CacheType cacheType;
 
-    private NotebookBasedCache notebookBasedCache;
+	private NotebookBasedCache notebookBasedCache;
 
-    private DatetimeBasedCache datetimeBasedCache;
+	private DatetimeBasedCache datetimeBasedCache;
 
-    public ICrawledDataCache getCache() {
-        switch (cacheType) {
-            case NOTEBOOK_BASED:
-                return notebookBasedCache;
-            case DATETIME_BASED:
-                return datetimeBasedCache;
-        }
-        throw new CrawlerInitialException("No matched data cache applied.");
-    }
+	public ICrawledDataCache getCache() {
+		switch (cacheType) {
+			case NOTEBOOK_BASED:
+				return notebookBasedCache;
+			case DATETIME_BASED:
+				return datetimeBasedCache;
+		}
+		throw new CrawlerRuntimeException("No matched data cache applied.");
+	}
 
-    public CacheType getCacheType() {
-        return cacheType;
-    }
+	public CacheType getCacheType() {
+		return cacheType;
+	}
 
-    public void setCacheType(CacheType cacheType) {
-        this.cacheType = cacheType;
-    }
+	public void setCacheType(CacheType cacheType) {
+		this.cacheType = cacheType;
+	}
 
-    public NotebookBasedCache getNotebookBasedCache() {
-        return notebookBasedCache;
-    }
+	public NotebookBasedCache getNotebookBasedCache() {
+		return notebookBasedCache;
+	}
 
-    public void setNotebookBasedCache(NotebookBasedCache notebookBasedCache) {
-        this.notebookBasedCache = notebookBasedCache;
-    }
+	public void setNotebookBasedCache(NotebookBasedCache notebookBasedCache) {
+		this.notebookBasedCache = notebookBasedCache;
+	}
 
-    public DatetimeBasedCache getDatetimeBasedCache() {
-        return datetimeBasedCache;
-    }
+	public DatetimeBasedCache getDatetimeBasedCache() {
+		return datetimeBasedCache;
+	}
 
-    public void setDatetimeBasedCache(DatetimeBasedCache datetimeBasedCache) {
-        this.datetimeBasedCache = datetimeBasedCache;
-    }
+	public void setDatetimeBasedCache(DatetimeBasedCache datetimeBasedCache) {
+		this.datetimeBasedCache = datetimeBasedCache;
+	}
 
-    public enum CacheType {
-        NOTEBOOK_BASED, DATETIME_BASED
-    }
+	public enum CacheType {
+		NOTEBOOK_BASED, DATETIME_BASED
+	}
 }

@@ -5,5 +5,5 @@ package com.acgsior.image;
  */
 public enum ImageType {
 
-	AVATAR, COVER, IMAGE;
+	AVATAR, COVER, IMAGE
 }
